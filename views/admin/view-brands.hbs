@@ -1,0 +1,115 @@
+<div class="container-scroller">
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial -->
+
+        <!--sidebar.html -->
+        {{>admin-sidebar}}
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Cars by brand</h4>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th>
+                                                    Logo
+                                                </th>
+                                                <th>
+                                                    Brand
+                                                </th>
+                                                <th>
+                                                    No of Cars
+                                                </th>
+                                                <th>
+                                                    View Models
+                                                </th>
+                                                <th>
+                                                    Actions
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each cars}}
+                                            <tr class="text-center tableRow">
+                                                <td class="p-1" style="">
+                                                    <div>
+
+                                                        <img src="{{this.logo}}" alt="image"
+                                                            style="object-fit: contain !important;" />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    {{this.make}}
+                                                </td>
+                                                <td>
+                                                    {{this.noOfCars}}
+
+                                                </td>
+                                                <td>
+                                                    <a class="text-pimary text-decoration-none"
+                                                        href="/cars-management/view-models/{{this._id}}">
+                                                        Show all models
+                                                    </a>
+                                                </td>
+
+                                                <td>
+                                                   <a onclick="return deleteBrand(event,'{{this._id}}')"
+                                                        title="Delete brand"> <i
+                                                            class="far fa-trash-alt ms-4 text-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+
+<script>
+    function deleteBrand(event, id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                let response = await fetch("/cars-management/delete-brand/" + id)
+                let data =await response.json()
+                if (data) {
+                event.target.closest('.tableRow').style.display = 'none';
+
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+
+
+            }
+        })
+        console.log(id)
+    }
+</script>

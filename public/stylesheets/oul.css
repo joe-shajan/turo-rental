@@ -1,0 +1,41 @@
+.owl-theme .owl-dots .owl-dot.active span,
+.owl-theme .owl-dots .owl-dot:hover span {
+  background: #5110e9;
+}
+
+
+
+
+.owl-carousel .nav-button {
+  height: 35px;
+  width: 35px;
+  cursor: pointer;
+  position: absolute;
+  top: 25% !important;
+}
+
+
+
+.owl-carousel .owl-prev {
+  left: -40px;
+}
+
+.owl-carousel .owl-next {
+  right: -40px;
+}
+
+.owl-theme .owl-nav [class*=owl-] {
+  color: #000000;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  background: #c1c1c11d;
+  border-radius: 100px;
+}
+
+
+
+
+
+
+

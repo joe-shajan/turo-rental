@@ -1,0 +1,123 @@
+<div class="container-scroller">
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial -->
+
+        <!--sidebar.html -->
+        {{>admin-sidebar}}
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">New bookings</h4>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Image
+                                                </th>
+                                                <th>
+                                                    Brand
+                                                </th>
+                                                <th>
+                                                    Model
+                                                </th>
+                                                <th>
+                                                    User name
+                                                </th>
+                                                <th>
+                                                    Pick up time
+                                                </th>
+                                                {{!-- <th>
+                                                    To
+                                                </th> --}}
+                                                <th>
+                                                    Location
+                                                </th>
+                                                <th>
+                                                    Total Amount
+                                                </th>
+                                                <th>
+                                                    Starts IN
+                                                </th>
+                                                <th>
+
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each bookings}}
+                                            <tr>
+                                                <td class="py-1" style="border-radius: 1%;">
+                                                    <img src="/images/car-images/{{this.cars.images.[0]}}"
+                                                        alt="image" />
+                                                </td>
+                                                <td>
+                                                    {{this.cars.brand}}
+                                                </td>
+                                                <td>
+                                                    {{this.cars.model}}
+                                                </td>
+                                                <td>
+                                                    {{this.users.firstname}}
+                                                </td>
+                                                <td>
+                                                    {{this.from}}
+                                                </td>
+                                                {{!-- <td>
+                                                    this.to
+                                                </td> --}}
+                                                <td>
+                                                    {{this.cars.city}}
+                                                </td>
+                                                <td>
+                                                    ₹ {{this.totalAmount}}
+                                                </td>
+                                                <td>
+                                                    {{#if timeToCancel}}
+                                                    <span class="text-danger">
+                                                    Booking will be <br> Cancelled in <br><br>
+                                                    {{this.timeToCancel}}</span>
+
+                                                    {{/if}}
+                                                    {{#if timeToStart}}
+                                                    <span class="text-success">
+
+                                                    {{this.timeToStart}}
+                                                    </span>
+
+                                                    {{/if}}
+                                                </td>
+                                                <td>
+                                                    {{#if lessThanTwoHour}}
+
+                                                    <a href="/bookings/start-trip/{{this._id}}"
+                                                        class="btn btn-sm btn-outline-success">Start</a>
+                                                        {{else}}
+                                                         <button type="button" class="btn btn-sm btn-outline-dark" disabled>Start</button>
+                                                    {{/if}}
+                                                </td>
+
+                                            </tr>
+                                            {{/each}}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>

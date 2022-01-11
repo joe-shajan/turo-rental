@@ -1,0 +1,124 @@
+<style>
+    td {
+        padding:0 !important;
+    }
+    
+</style>
+<div class="container-scroller">
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial -->
+
+        <!--sidebar.html -->
+        {{>admin-sidebar}}
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">On Going Trips</h4>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Image
+                                                </th>
+                                                <th>
+                                                    Brand
+                                                </th>
+                                                <th>
+                                                    Model
+                                                </th>
+                                                <th>
+                                                    User name
+                                                </th>
+
+                                                <th>
+                                                    To
+                                                </th>
+                                                <th>
+                                                    Location
+                                                </th>
+                                                <th>
+                                                    Total Amount
+                                                </th>
+                                                <th>
+                                                    Time Remaining
+                                                </th>
+                                                
+                                                <th>
+                                                    Fine
+                                                </th>
+                                                <th>
+                                                    Actions
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each bookings}}
+                                            <tr>
+                                                <td class="py-1" style="border-radius: 1%;">
+                                                    <img src="/images/car-images/{{this.cars.images.[0]}}"
+                                                        alt="image" />
+                                                </td>
+                                                <td>
+                                                    {{this.cars.brand}}
+                                                </td>
+                                                <td>
+                                                    {{this.cars.model}}
+                                                </td>
+                                                <td>
+                                                    {{this.users.firstname}}
+                                                </td>
+
+                                                <td>
+                                                    {{this.to}}
+                                                </td>
+                                                <td>
+                                                    {{this.cars.city}}
+                                                </td>
+                                                <td>
+                                                    ₹ {{this.totalAmount}}
+                                                </td>
+                                                <td>
+                                                    {{#if this.timeToEnd}}
+                                                   <span class="text-success"> {{this.timeToEnd}}</span>
+                                                   {{/if}}
+                                                    {{#if this.extraTime}}
+                                                   <span class="text-danger">Extra <br> {{this.extraTime}} taken</span>
+                                                   {{/if}}
+                                                </td>
+                                                  <td>
+                                                {{#if this.fine}}
+                                                    ₹ {{this.fine}}
+                                                    {{else}}
+                                                    ₹ 0
+                                                {{/if}}
+                                                </td>
+                                                <td>
+                                                    <a href="/bookings/complete-trip/{{this._id}}"
+                                                        class="btn btn-sm btn-outline-danger">End Trip</a>
+                                                </td>
+
+                                            </tr>
+                                            {{/each}}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>

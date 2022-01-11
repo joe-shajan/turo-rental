@@ -1,0 +1,464 @@
+{{!-- header with search --}}
+
+<section class="cars-section-1">
+    <div class="container">
+        <div class="pt-4 ps-md-5">
+            {{#if cityName}}
+            <h2 class="mt-5 ms-5">Top Rated Cars's in <b> {{cityName}}</b></h2>
+            {{else}}
+            <h2 class="mt-5 ms-5">Top Rated {{brand}}'s</h2>
+            {{/if}}
+        </div>
+    </div>
+</section>
+
+{{!-- header with search --}}
+
+
+
+<section class="mt-5 mb-5">
+    <div class="container mt-5">
+
+        <div class="row d-flex justify-content-center">
+            <div class="col-10">
+                {{#if carsData}}
+                <div class="d-flex gap-3">
+
+                    <div class="">
+                        <button class="btn btn-light rounded-1 btn-sm shadow-sm border dropdown-toggle fw-bold"
+                            type="button" data-mdb-toggle="dropdown" aria-expanded="false">
+                            Sort by
+                        </button>
+
+                        <ul class="dropdown-menu">
+                            {{!-- <li><a class="dropdown-item" href="/sort?brand=brand&popularity=true">Most Ratings</a>
+                                --}}
+                                {{!-- </li> --}}
+                            <li><a class="dropdown-item" onclick="return sort(1)">Price Low to High</a></li>
+                            <li><a class="dropdown-item" onclick="return sort(-1)">Price High to Low</a></li>
+                        </ul>
+
+
+                    </div>
+
+
+
+                    <button type="button" class="btn btn-light btn-sm rounded-1 border shadow-sm fw-bold"
+                        data-mdb-toggle="modal" data-mdb-target="#exampleModal">
+                        Filters
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form onsubmit="return filteritem()">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Filter</h5>
+                                        <button type="button" class="btn-close" id="btn-close" data-mdb-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        {{!-- year --}}
+
+
+                                        <div class="d-flex mt-3">
+                                            <div class="pe-5">
+                                                <label for="" class="mb-2">From year</label>
+                                                <select class="form-select" id="fromyear">
+
+                                                    <option>2020</option>
+                                                    <option>2019</option>
+                                                    <option>2018</option>
+                                                    <option>2017</option>
+                                                    <option>2016</option>
+                                                    <option>2015</option>
+                                                    <option>2014</option>
+                                                    <option>2013</option>
+                                                    <option>2012</option>
+                                                    <option>2011</option>
+                                                    <option>2010</option>
+                                                    <option>2009</option>
+                                                    <option>2008</option>
+                                                    <option>2007</option>
+                                                    <option>2006</option>
+                                                    <option>2005</option>
+                                                    <option>2004</option>
+                                                    <option>2003</option>
+                                                    <option>2002</option>
+                                                    <option>2001</option>
+                                                    <option>2000</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label for="" class="mb-2">To year</label>
+                                                <select class="form-select" id="toyear">
+                                                    <option>2021</option>
+                                                    <option>2020</option>
+                                                    <option>2019</option>
+                                                    <option>2018</option>
+                                                    <option>2017</option>
+                                                    <option>2016</option>
+                                                    <option>2015</option>
+                                                    <option>2014</option>
+                                                    <option>2013</option>
+                                                    <option>2012</option>
+                                                    <option>2011</option>
+                                                    <option>2010</option>
+                                                    <option>2009</option>
+                                                    <option>2008</option>
+                                                    <option>2007</option>
+                                                    <option>2006</option>
+                                                    <option>2005</option>
+                                                    <option>2004</option>
+                                                    <option>2003</option>
+                                                    <option>2002</option>
+                                                    <option>2001</option>
+                                                    <option>2000</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        {{!-- year --}}
+                                        {{!-- brand --}}
+                                        {{#if brand}}
+                                        <input type="text" id="brand" value="{{brand}}" hidden>
+
+                                        {{else}}
+                                        <label class="mb-2 mt-4">Select Brand</label>
+                                        <select class="form-select" aria-label=" Default select example" id="brand">
+                                            <option value="" selected>Select...</option>
+                                            {{#each brandNames}}
+                                            <option value="{{this}}">{{this}}</option>
+                                            {{/each}}
+
+                                        </select>
+                                        {{/if}}
+                                        {{!-- brand --}}
+
+                                        {{!-- vehicle type --}}
+                                        <label class="mb-2 mt-4">Vehicle type</label>
+                                        <select class="form-select" aria-label=" Default select example" id="type">
+                                            <option value="" selected>Select...</option>
+                                            <option value="SUV">SUV</option>
+                                            <option value="Convertible">Convertible</option>
+                                            <option value="Wagon">Wagon</option>
+                                            <option value="Sedan">Sedan</option>
+                                            <option value="Coupe">Coupe</option>
+                                            <option value="Hatchback">Hatchback</option>
+                                        </select>
+                                        {{!-- vehicle type --}}
+                                        {{!-- no of seats --}}
+                                        <label class="mb-2 mt-4">No of Seats</label>
+                                        <select class="form-select" aria-label=" Default select example" id="seats">
+                                            <option value="1" selected>Select...</option>
+                                            <option value="2">Two or more</option>
+                                            <option value="3">Three or more</option>
+                                            <option value="4">Four or more</option>
+                                            <option value="5">Five or more</option>
+                                            <option value="6">Six or more</option>
+                                        </select>
+                                        {{!-- no of seats --}}
+                                        {{!-- Transmission --}}
+                                        {{!-- <label class="mb-2 mt-4">Transmission</label>
+                                        <select class="form-select" aria-label=" Default select example"
+                                            name="transmission">
+                                            <option value="" selected>Select...</option>
+                                            <option value="Automatic">Automatic</option>
+                                            <option value="Manual">Manual</option>
+
+                                        </select> --}}
+                                        {{!-- Transmission --}}
+                                    </div>
+                                    <div class="modal-footer">
+
+                                        <button type="submit" class="btn btn-primary">View Cars</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-cols-1 row-cols-md-3 g-4 mt-2" id="allrow">
+                    {{#each carsData}}
+                    <div class="col mt-5 parent-class d-block" id="{{this._id}}2">
+                        <div class="rounded shadow" style="height: 270px">
+                            <div class="bg-image hover-zoom">
+                                <a class="text-decoration-none text-dark" href="/view-car-details/{{this._id}}">
+                                    <img src="/images/car-images/{{this.images.[0]}}" class="card-img-top" alt="..."
+                                        style="height: 190px; object-fit: cover;" />
+                                </a>
+                            </div>
+                            <div class="row ps-2 pe-2">
+                                <div class="col-7 col-md-8 d-flex align-items-start flex-column">
+
+                                    <h4 class="card-title mt-2 fw-bold">{{this.brand}} {{this.model}}
+                                        {{this.makeyear}}</h4>
+                                    <div class="d-flex mt-1 mb-1">
+
+                                        <p class="lh-1 fs-6 text-dark" id="{{this._id}}1">0</p>
+                                        <i class="fas fa-star text-primary ms-1"></i>
+                                        <p class="ms-4 lh-1"> {{this.fuel}} <i class="fas fa-gas-pump ms-1"></i></p>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-5 col-md-4 d-flex justify-content-around flex-column align-items-end">
+
+
+                                    <i onclick="return addToWishlist(event,'{{this._id}}')" id="{{this._id}}"
+                                        class="far fa-heart fa-lg  mt-2 me-2"></i>
+
+
+
+                                    <div class="d-flex mt-2">
+                                        <h4 class="card-title mt-1">₹ {{this.price_per_day}} </h4>
+                                        <p class="mt-1"> / day</p>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{/each}}
+                </div>
+                {{else}}
+                <h1>sorry no cars available</h1>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+
+    function sort(s) {
+        const cards = [...document.getElementsByClassName('d-block')]
+
+
+        const frag = document.createDocumentFragment();
+        const div = document.getElementById('allrow')
+        const items = div.getElementsByClassName('d-block');
+        // console.log(items)
+
+        const sortedList = [...items].sort((a, b) => {
+            a = a.children[0].children[1].children[1].children[1].children[0].textContent
+            b = b.children[0].children[1].children[1].children[1].children[0].textContent
+            a = parseInt(a.slice(2))
+            b = parseInt(b.slice(2))
+            console.log(b)
+
+            const c = a,
+                d = b;
+            if (s == 1) {
+                return c < d ? -1 : c > d ? 1 : 0;
+
+            }
+            if (s == -1) {
+
+                return c > d ? -1 : c < d ? 1 : 0;
+            }
+        });
+        for (const item of sortedList) {
+            frag.appendChild(item);
+        }
+        div.appendChild(frag);
+
+
+    }
+
+    function filteritem() {
+
+
+        let fromyear = document.getElementById('fromyear').value;
+        let toyear = document.getElementById('toyear').value;
+        let brand = document.getElementById('brand').value;
+        let type = document.getElementById('type').value;
+        let seats = document.getElementById('seats').value;
+        const cards = [...document.getElementsByClassName('parent-class')]
+
+        fetch('/filter?fromyear=' + fromyear + '&toyear=' + toyear + '&brand=' + brand + '&type=' + type + '&seats=' + seats)
+            .then((response) => {
+                response.json()
+                    .then((data) => {
+                        if (data[0]) {
+                            console.log(data[0])
+                            for (i = 0; i < cards.length; i++) {
+
+                                cards[i].classList.remove('d-block')
+                                cards[i].classList.add('d-none')
+                            }
+                            for (i = 0; i < data.length; i++) {
+                                if (document.getElementById(data[i] + '2')) {
+
+                                    document.getElementById(data[i] + '2').classList.remove('d-none')
+                                    document.getElementById(data[i] + '2').classList.add('d-block')
+                                }
+                            }
+                        }
+                    })
+            })
+        document.getElementById('btn-close').click()
+        return false;
+    }
+
+
+    fetch('/find-cars-inWishlist').then((response) => {
+        response.json().then((carIds) => {
+            if (carIds) {
+
+                for (x of carIds) {
+                    if (document.getElementById(x)) {
+
+                        document.getElementById(x).classList.add('fas', 'text-danger')
+                        document.getElementById(x).classList.remove('far')
+                    }
+                }
+            }
+        })
+    })
+
+
+    fetch('/get-average-review').then((response) => {
+        response.json().then((carData) => {
+            if (carData) {
+                for (x of carData) {
+
+                    if (document.getElementById(x.carId + '1')) {
+                        document.getElementById(x.carId + '1').innerHTML = x.averageRating
+                    }
+                }
+            }
+        })
+    })
+
+
+    async function addToWishlist(event, carId) {
+        url = "/add-to-wishlist/" + carId
+        let response = await fetch(url)
+        let data = await response.json()
+        if (data.noUser) {
+            Swal.fire({
+                title: 'Please Login to continue',
+                showCancelButton: true,
+                confirmButtonText: 'Login',
+
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    location.href = '/login'
+                }
+            })
+        }
+
+        if (data.addedToWishlist) {
+
+            event.target.classList.add('fas', 'text-danger')
+            event.target.classList.remove('far')
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 3000,
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Added to wishlist',
+            })
+
+        }
+        if (data.removedFromWishlist) {
+
+
+            event.target.classList.add('far')
+            event.target.classList.remove('fas', 'text-danger')
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 2000,
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Removed from wishlist',
+            })
+        }
+    }
+
+    function fromDateSelect() {
+        let fromDate = document.getElementById('from').value
+        document.getElementById("to").setAttribute("value", fromDate);
+        document.getElementById("to").setAttribute("min", fromDate);
+
+
+    }
+    var todayDate = new Date();
+    var month = todayDate.getMonth() + 1
+    var year = todayDate.getUTCFullYear() - 0;
+    var tdatefrom = todayDate.getDate()
+    var tdateto = todayDate.getDate() + 1
+    if (month < 10) {
+        month = "0" + month
+    }
+    if (tdatefrom < 10) {
+        tdatefrom = "0" + tdatefrom;
+    }
+    if (tdateto < 10) {
+        tdateto = "0" + tdateto;
+    }
+    var maxDatefrom = year + "-" + month + "-" + tdatefrom;
+    document.getElementById("from").setAttribute("value", maxDatefrom);
+    document.getElementById("from").setAttribute("min", maxDatefrom);
+
+
+    var maxDateto = year + "-" + month + "-" + tdateto;
+    document.getElementById("to").setAttribute("value", maxDateto);
+    document.getElementById("to").setAttribute("min", maxDateto);
+
+
+    function validateSearchForm() {
+        let city = document.getElementById("cityselect").value
+        if (city == "City") {
+            document.getElementById("where").classList.remove("text-dark")
+            document.getElementById("where").classList.add("text-danger")
+            document.getElementById('where').innerHTML = "Enter City"
+            return false
+        } else {
+            document.getElementById("where").classList.remove("text-danger")
+            document.getElementById("where").classList.add("text-dark")
+            document.getElementById('where').innerHTML = "Where"
+        }
+
+    }
+
+    function sortByPrice() {
+        let minPrice = document.getElementById("min-price").value
+        let maxPrice = document.getElementById("max-price").value
+
+
+        if (minPrice < maxPrice) {
+            const parentClass = [...document.getElementsByClassName("parent-class")];
+            for (i = 0; i < parentClass.length; i++) {
+
+                let value = parentClass[i].children[0].children[1].children[1].children[1].children[0].textContent
+                let price = parseInt(value.substring(2))
+                parentClass[i].classList.add('d-none')
+                if (minPrice <= price && maxPrice >= price) {
+                    parentClass[i].classList.remove('d-none')
+                    parentClass[i].classList.add('d-block')
+                }
+            }
+
+        }
+    }
+
+
+
+</script>

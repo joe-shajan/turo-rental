@@ -1,0 +1,393 @@
+{{!-- header with search --}}
+
+<section class="section-1"
+    style="background: url(/images/banner-images/{{filename}}); background-position: center; background-repeat: no-repeat; background-size: cover;   ">
+    <div class="container">
+        <form action="/search-location-date-time" method="get" onsubmit="return validateSearchForm()">
+            <div class=" d-flex justify-content-center">
+                {{!-- location date and time sorting --}}
+
+                <div class=" row d-flex  bg-white mt-5 header-sort ps-3 shadow-lg pt-1">
+                    <div class="col-md-3 col-12">
+                        <p id="where" class="text-dark font-weight-bold" style="margin-bottom: 0;">Where</p>
+                        <select id="cityselect" name="location" class="form-select form-select-sm  border-0">
+                            <option class="text-muted" selected>City</option>
+                            {{#each cities}}
+                            <option>{{this.city}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 pe-2 ">
+                        <p class="text-dark font-weight-bold ms-md-3" style="margin-bottom: 0;">From</p>
+                        <div class="d-flex">
+                            <div class="col-6 col-md-8">
+
+                                <input type="date" id="from" name="from" class="form-control  border-0"
+                                    oninput="return fromDateSelect()" />
+                            </div>
+                            <div class="col-6 col-md-5">
+
+                                <select id="from-time" name="from" class="form-select form-select-sm  border-0">
+                                    <option value=" 09:00" selected>09:00 AM</option>
+                                    <option value=" 10:00">10:00 AM</option>
+                                    <option value=" 11:00">11:00 AM</option>
+                                    <option value=" 12:00">12:00 PM</option>
+                                    <option value=" 13:00">01:00 PM</option>
+                                    <option value=" 14:00">02:00 PM</option>
+                                    <option value=" 15:00">03:00 PM</option>
+                                    <option value=" 16:00">04:00 PM</option>
+                                    <option value=" 17:00">05:00 PM</option>
+                                    <option value=" 18:00">06:00 PM</option>
+                                    <option value=" 19:00">07:00 PM</option>
+                                    <option value=" 20:00">08:00 PM</option>
+                                    <option value=" 21:00">09:00 PM</option>
+                                    <option value=" 22:00">10:00 PM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 pe-2 ">
+                        <p class="text-dark font-weight-bold ms-md-3" style="margin-bottom: 0;">To</p>
+                        <div class="d-flex">
+                            <div class="col-6 col-md-8">
+
+                                <input type="date" id="to" name="to" class="form-control border-0" />
+                            </div>
+                            <div class="col-6 col-md-5">
+
+                                <select id="from-time" name="to" class="form-select form-select-sm  border-0">
+                                    <option value=" 09:00" selected>09:00 AM</option>
+                                    <option value=" 10:00">10:00 AM</option>
+                                    <option value=" 11:00">11:00 AM</option>
+                                    <option value=" 12:00">12:00 PM</option>
+                                    <option value=" 13:00">01:00 PM</option>
+                                    <option value=" 14:00">02:00 PM</option>
+                                    <option value=" 15:00">03:00 PM</option>
+                                    <option value=" 16:00">04:00 PM</option>
+                                    <option value=" 17:00">05:00 PM</option>
+                                    <option value=" 18:00">06:00 PM</option>
+                                    <option value=" 19:00">07:00 PM</option>
+                                    <option value=" 20:00">08:00 PM</option>
+                                    <option value=" 21:00">09:00 PM</option>
+                                    <option value=" 22:00">10:00 PM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class=" col-md-1 ps-4 d-none d-md-block align-self-center">
+                        <button class="border-0 bg-white"><i class="fas fa-search fa-lg"></i></button>
+
+                    </div>
+                    <div class=" col-md-1 ps-2 d-md-none d-flex justify-content-center align-self-center p-2">
+                        <button class="btn btn-outline-success btn-sm" type="submit">Search</button>
+
+                    </div>
+                </div>
+
+            </div>
+
+            {{!-- small screen --}}
+
+
+
+
+        </form>
+    </div>
+</section>
+
+{{!-- header with search --}}
+
+
+{{!-- brouser by make --}}
+<section class="mt-5 mb-5">
+    <div class="text-center">
+        <h1 class="text-dark display-1" style="font-family: 'Oleo Script Swash Caps', cursive;">Find your drive</h1>
+    </div>
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-10">
+                <h5 class=" text-dark display-5 fw-bold">Browse by make</h5>
+                <div class="row row-cols-3 row-cols-md-5 g-4 mt-2">
+                    <div id="brands" class="owl-carousel owl-theme">
+                        {{#each brands}}
+                        <div class="item">
+                            <a href="/view-cars-by-brand/{{this.make}}" class="text-decoration-none">
+                                <div class="card shadow-0">
+                                    <div class="bg-image hover-zoom">
+                                        <img src="{{this.logo}}" class="card-img-top" alt="..." />
+                                    </div>
+                                    <div class="text-center">
+                                        <h5 class="card-title mt-1">{{this.make}}</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {{/each}}
+
+
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{{!-- brouser by make --}}
+
+
+{{!-- brouse by location --}}
+<section class="mt-5 mb-4">
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-10">
+                <h5 class=" text-dark display-5 fw-bold">Browse by Location</h5>
+                <div class="row row-cols-3 row-cols-md-5 g-4 mt-2">
+                    <div id="city" class="owl-carousel owl-theme">
+                        {{#each cities}}
+                        <div class="item mt-2 slide-up">
+                            <a href="/view-cars-by-city/{{this.city}}" class="text-decoration-none">
+                                <div class="card shadow rounded-2 mb-5">
+                                    <div class="bg-image hover-zoom">
+
+                                        <img src="/images/location-images/{{this.image}}" class="card-img-top"
+                                            alt="..." />
+                                    </div>
+                                    <div class="text-center">
+                                        <h5 class="card-title mt-3">{{this.city}}</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {{/each}}
+
+
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{{!-- brouser by Location --}}
+
+
+{{!-- popular cars --}}
+<section class="mt-5 mb-5">
+
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-10">
+                <h5 class=" text-dark display-5 fw-bold">Popular cars</h5>
+                <div class="row row-cols-3 row-cols-md-5 g-4 mt-2">
+                    <div id="owl-popular-cars" class="owl-carousel owl-theme">
+                        {{#each popularCars}}
+                        <div class="col shadow rounded-5 mb-5 " style="height:270px">
+                            <div class="rounded">
+                                <div class="bg-image hover-zoom">
+                                    <a class="text-decoration-none text-dark"
+                                        href="/view-car-details/{{this.cars._id}}">
+                                        <img src="/images/car-images/{{this.cars.images.[0]}}" class="card-img-top"
+                                            alt="..." style="height: 190px; object-fit: cover;" />
+                                    </a>
+                                </div>
+                                <div class="row ps-2 pe-2">
+                                    <div class="col-7 col-md-7 d-flex align-items-start flex-column">
+
+                                        <h4 class="card-title mt-2 fw-bold">{{this.cars.brand}} {{this.cars.model}}
+                                            {{this.cars.makeyear}}</h4>
+                                        <div class="d-flex mt-1 mb-1">
+
+                                            <p class="lh-1">{{this.averageRating}}<i
+                                                    class="fas fa-star text-primary ms-1"></i></p>
+                                            <p class="ms-4 lh-1"> {{this.cars.fuel}} <i
+                                                    class="fas fa-gas-pump ms-1"></i></p>
+                                        </div>
+                                    </div>
+
+
+                                    <div
+                                        class="col-5 col-md-5 d-flex justify-content-around flex-column align-items-end">
+
+                                        <div class="d-flex mt-2">
+                                            <h4 class="card-title mt-1">₹ {{this.cars.price_per_day}} </h4>
+                                            <p class="mt-1"> / day</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{{!-- cars near you --}}
+<section class="pb-5 bg-secondary" id="near-car-section">
+
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-10 col-md-8">
+                <h5 class=" text-dark display-4 text-center mt-4 mb-4">Cars near you</h5>
+                <div class="d-flex justify-content-between">
+
+                    <p class="mb-3 fs-6">With in 20 km</p>
+                    <p class="mb-3 fs-6"><i class="fas fa-map-marker-alt"></i><span class="ms-2"
+                            id="your-address"></span></p>
+                </div>
+                <div class="row row-cols-1 row-cols-md-2 mt-2" id="nearest-cars">
+
+                </div>
+                <h1 class="display-3 text-center mt-5 mb-5" id="no-cars-msg"></h1>
+            </div>
+        </div>
+    </div>
+</section>
+{{!-- cars near you --}}
+
+
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1Ijoiam9lc2hhamFuIiwiYSI6ImNreTJsYXA1cTBibTAybmw1ZXZuYW13enIifQ.C263rdaHgVlMR9AIgxYqYw';
+
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+
+    }
+
+
+    async function showPosition(position) {
+        latitude = position.coords.latitude
+        longitude = position.coords.longitude
+
+        fetch("https://api.mapbox.com/geocoding/v5/mapbox.places/" + longitude + "," + latitude + ".json?types=locality&access_token=" + mapboxgl.accessToken)
+
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.features[0].place_name) {
+                    place_name = data.features[0].place_name
+
+
+                    document.getElementById('your-address').innerHTML = place_name
+
+                }
+            })
+
+        let response = await fetch('/cars-management/get-nearest-cars/' + latitude + '/' + longitude)
+        let data = await response.json()
+        console.log(data)
+        if (data.cars) {
+            console.log('fsdfsd')
+            for (x of data.nearestCars) {
+                document.getElementById('nearest-cars').innerHTML +=
+                    '<div class="col">'
+                    + ' <div class=" rounded shadow bg-white  mb-4" style="height:270px">'
+                    + '<div class="bg-image hover-zoom">'
+                    + '<a class="text-decoration-none text-dark" href="/view-car-details/' + x._id + '">'
+                    + '<img src="/images/car-images/' + x.images[0] + '" class="card-img-top" alt="..." style="height: 190px; object-fit: cover;" />'
+                    + '</a>'
+                    + '</div>'
+                    + ' <div class="row ps-2 pe-2 ">'
+                    + '<div class="col-7 col-md-7  d-flex align-items-start flex-column">'
+
+                    + '<h4 class="card-title mt-2 fw-bold">' + x.brand + ' ' + x.model + ' ' + x.makeyear + '</h4>'
+                    + '<div class="d-flex mt-1 mb-1">'
+
+                    + '<p class="lh-1 fw-bold">' + x.distance + ' km </p>'
+                    + '<p class="ms-4 lh-1"> ' + x.fuel + ' <i class="fas fa-gas-pump ms-1"></i> </p>'
+                    + '</div>'
+                    + '</div>'
+                    + ' <div class="col-5 col-md-5 d-flex justify-content-around flex-column align-items-end">'
+
+                    + '<div class="d-flex mt-2">'
+                    + ' <h4 class="card-title mt-1">₹ ' + x.price_per_day + ' </h4>'
+                    + '<p class="mt-1"> / day</p>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+            }
+        } else {
+            console.log('joe')
+            document.getElementById('no-cars-msg').innerHTML = "No cars in your area"
+
+        }
+
+
+
+    }
+
+
+
+
+    function fromDateSelect() {
+        let fromDate = document.getElementById('from').value
+        var date = new Date(fromDate);
+
+        var month = date.getMonth() + 1
+        var year = date.getUTCFullYear() - 0;
+        var tdatefrom = date.getDate() + 1
+        if (month < 10) {
+            month = "0" + month
+        }
+        if (tdatefrom < 10) {
+            tdatefrom = "0" + tdatefrom;
+        }
+        var maxDatefrom = year + "-" + month + "-" + tdatefrom;
+        document.getElementById("to").setAttribute("value", maxDatefrom);
+        document.getElementById("to").setAttribute("min", maxDatefrom);
+
+
+
+    }
+    var todayDate = new Date();
+    var month = todayDate.getMonth() + 1
+    var year = todayDate.getUTCFullYear() - 0;
+    var tdatefrom = todayDate.getDate()
+    var tdateto = todayDate.getDate() + 1
+    if (month < 10) {
+        month = "0" + month
+    }
+    if (tdatefrom < 10) {
+        tdatefrom = "0" + tdatefrom;
+    }
+    if (tdateto < 10) {
+        tdateto = "0" + tdateto;
+    }
+    var maxDatefrom = year + "-" + month + "-" + tdatefrom;
+    document.getElementById("from").setAttribute("value", maxDatefrom);
+    document.getElementById("from").setAttribute("min", maxDatefrom);
+
+
+    var maxDateto = year + "-" + month + "-" + tdateto;
+    document.getElementById("to").setAttribute("value", maxDateto);
+    document.getElementById("to").setAttribute("min", maxDateto);
+
+    function validateSearchForm() {
+        let city = document.getElementById("cityselect").value
+        if (city == "City") {
+            document.getElementById("where").classList.remove("text-dark")
+            document.getElementById("where").classList.add("text-danger")
+            document.getElementById('where').innerHTML = "Enter City"
+            return false
+        } else {
+            document.getElementById("where").classList.remove("text-danger")
+            document.getElementById("where").classList.add("text-dark")
+            document.getElementById('where').innerHTML = "Where"
+        }
+
+    }
+
+</script>

@@ -1,0 +1,49 @@
+<section>
+    <div class="container">
+        <div class="row d-flex justify-content-center p-5">
+            <div class="col-12 col-md-4 shadow-lg p-5 border border-primary rounded-9">
+                <div class="text-center">
+                    <p class="fw-bold mb-4">Enter the otp received in your mobile number</p>
+                    {{#if wrongotp}}
+                    <p class="text-danger fw-bold mt-2">Entered otp is incorrect</p>
+                    {{/if}}
+                    <p id="otpfieldempty" class="text-danger fw-bold mt-2"></p>
+
+                </div>
+                <form onsubmit="return validateotp()" action="/login/otp" method="post" class="customer-form">
+                    <div class="row d-flex justify-content-center gap-3 ">
+
+
+                        <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
+                            <input class="m-2 text-center form-control1 rounded" name="otp" type="number" id="first"
+                             maxlength="1" />
+                            <input class="m-2 text-center form-control1 rounded" name="otp" type="number" id="second"
+                                maxlength="1" />
+                            <input class="m-2 text-center form-control1 rounded" name="otp" type="number" id="third"
+                                maxlength="1" />
+                            <input class="m-2 text-center form-control1 rounded" name="otp" type="number" id="fourth"
+                                maxlength="1" />
+                        </div>
+
+
+
+
+                    </div>
+
+                    <div class="d-flex justify-content-center mt-3 text-danger">
+                        <span id="timer"></span>
+                    </div>
+
+
+                    <div class="text-center mt-4">
+                        <button id="otpBtn" type="submit" class="btn btn-primary btn-sm">verify otp</button>
+                    </div>
+                </form>
+                <div class="d-flex justify-content-center mt-4">
+
+                    <a class="text-decoration-none" href="/login/otp/resend">resend otp</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

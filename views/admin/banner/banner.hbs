@@ -1,0 +1,199 @@
+<div class="container-scroller">
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial -->
+
+        <!--sidebar.html -->
+        {{>admin-sidebar}}
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row d-flex justify-content-center ">
+
+                    <div class="col-md-8 grid-margin stretch-card">
+                        <div class="col-12 grid-margin text-center">
+                            <div class="card rounded-0 shadow-lg mb-3 " id="joe"
+                                style="background: url(/images/banner-images/{{filename}}); background-position: center; background-repeat: no-repeat; background-size: cover; width: 100%; height: 40vh;">
+
+                            </div>
+
+                            <a href="/banner-management/delete-banner"><i
+                                    class="far fa-trash-alt fa-lg text-danger"></i></a>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6 grid-margin stretch-card">
+                        <div class="col-12 grid-margin">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Add new Banner</h4>
+                                    {{#if invalidInput}}
+                                    <div class="alert alert-danger" role="alert">
+                                        Input fields must not be empty
+                                    </div>
+                                    {{/if}}
+
+                                    <form onsubmit="return submitImage()">
+                                        <div class="form-group">
+                                            <label>Select banner Image</label>
+                                            <div class="input-group col-xs-12">
+                                                <input class="form-control form-control-sm" type="file"
+                                                    id="upload_image" name="image">
+                                            </div>
+                                            <p id="image-message"></p>
+
+                                            <div id="single"></div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary">upload</button>
+                                        <p id="image-message"></p>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<div class="container" align="center">
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Crop Image Before Upload</h5>
+                    <button type="button" onclick="return closemodel()" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body p-0">
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-md-11 p-0">
+                            <img src="" id="sample_image" class="imgcropping" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="crop" class="btn btn-primary">Crop</button>
+                    <button type="button" onclick="return closemodel()" class="btn btn-secondary"
+                        data-dismiss="modal">Cancel</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function closemodel(){
+    console.log('in close');
+    var $modal = $('#modal');
+    $modal.modal('hide');
+}
+
+let b64
+
+$(document).ready(function () {
+
+    var $modal = $('#modal');
+
+    var image = document.getElementById('sample_image');
+
+    var cropper;
+   
+    $('#upload_image').change(function (event) {
+        var files = event.target.files;
+
+        var done = function (url) {
+            image.src = url;
+            $modal.modal('show');
+        };
+
+        if (files && files.length > 0) {
+            reader = new FileReader();
+            reader.onload = function (event) {
+                done(reader.result);
+            };
+            reader.readAsDataURL(files[0]);
+        }
+    });
+
+    $modal.on('shown.bs.modal', function () {
+        cropper = new Cropper(image, {
+            aspectRatio: 2,
+            viewMode: 3,
+            preview: '.preview'
+        });
+    }).on('hidden.bs.modal', function () {
+        cropper.destroy();
+        cropper = null;
+    });
+
+    $('#crop').click(function () {
+        console.log("cropp cl");
+        canvas = cropper.getCroppedCanvas({
+            width: 1900,
+            height: 1200
+        });
+
+        canvas.toBlob(function (blob) {
+            url = URL.createObjectURL(blob);
+            var reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = function () {
+                var base64data = reader.result;
+
+                b64 = base64data
+                $modal.modal('hide');
+                document.getElementById("single").innerHTML = '<img src="' + base64data + '">';
+               
+            };
+        });
+    });
+});
+
+async function submitImage(){
+    const formData = new FormData();
+
+    if(b64) {
+        console.log(b64)
+        formData.append('image', b64);
+        let response = await fetch('/banner-management/add-banner',{
+            method: 'post',
+            body:formData
+        })
+        let data = await response.json();
+        console.log(data);
+        if(data){
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+               
+              })
+              
+              Toast.fire({
+                icon: 'success',
+                title: 'submitted successfully'
+              })
+              location.reload()
+        }
+        
+    }else{
+        document.getElementById("image-message").innerHTML = 'please upload image'
+        return false;
+    }
+    
+}
+</script>

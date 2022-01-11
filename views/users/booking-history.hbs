@@ -1,0 +1,170 @@
+<style>
+    .rating {
+        width: 180px;
+    }
+
+    .rating__star {
+        cursor: pointer;
+        color: #ffd900;
+    }
+</style>
+<section class="upcomming-booking-section d-flex justify-content-center align-items-end">
+    {{#if tripData}}
+    <h3>Completed trips</h3>
+    {{else}}
+    <h3>No Completed Trips </h3>
+    {{/if}}
+</section>
+<div class="container ">
+    <div class="row d-flex justify-content-center pb-5">
+
+        {{#each tripData}}
+        <div class="col-11  col-md-8 p-0 pe-2 d-flex bg-white shadow mt-5 rounded-1">
+           <div class="row">
+            <div class="col-5 col-md-4 ">
+
+                <img src="/images/car-images/{{this.cars.images.[0]}}" class="img-fluid" style="object-fit: cover;">
+            </div>
+            <div class="col-md-5 col-7 ps-2 d-flex flex-column justify-content-around">
+                <p class="display-5 fw-bold">{{this.cars.brand}} {{this.cars.model}}
+                    {{this.cars.makeyear}}</p>
+                <div>
+
+                    <p class=" fw-bold mb-0">From <span class=""> &nbsp :{{this.from}} &nbsp &nbsp
+                            {{time.from.[1]}}</span></p>
+                    <p class=" fw-bold mb-0">To &nbsp &nbsp &nbsp &nbsp : {{this.to}} &nbsp &nbsp
+                        {{time.to.[1]}}</p>
+                </div>
+                <p class="mb-0">Pick up and drop address : <span class="fw-bold"> {{this.cars.pick_up_address.address}}</span>
+                </p>
+            </div>
+            <div class="col-md-3 col-12 ps-4 mt-3 mb-2 d-flex flex-md-column justify-content-around text-md-center">
+                <p class="display-5 fw-bold">₹ {{this.totalAmount}}</p>
+                {{#if reviewPosted}}
+                <a onclick="return modelOpen('{{this.carId}}')" class="btn btn-primary btn-sm rounded-4 me-2"
+                    data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Update Review</a>
+                {{else}}
+
+                <a onclick="return modelOpen('{{this.carId}}')" class="btn btn-primary btn-sm rounded-4 me-2"
+                    data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Post Review</a>
+                {{/if}}
+            </div>
+            </div>
+        </div>
+        {{/each}}
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Post your feedback about this car</h5>
+                        <button type="button" id="closeBtn" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label text-dark">Rate this Car</label>
+                                <div class="rating">
+                                    <i class="rating__star far fa-star fa-lg"></i>
+                                    <i class="rating__star far fa-star fa-lg"></i>
+                                    <i class="rating__star far fa-star fa-lg"></i>
+                                    <i class="rating__star far fa-star fa-lg"></i>
+                                    <i class="rating__star far fa-star fa-lg"></i>
+                                </div>
+
+                            </div>
+                            <div class="mb-2">
+                                <label for="message-text" class="col-form-label text-dark">Write a Review</label>
+                                <textarea class="form-control" rows="3" name="message-text" id="message-text"
+                                    style="height: 90px;"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-primary" onclick="return submitReview()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<script>
+    const ratingStars = [...document.getElementsByClassName("rating__star")];
+
+    function executeRating(stars) {
+        const starClassActive = "rating__star fas fa-star fa-lg";
+        const starClassInactive = "rating__star far fa-star fa-lg";
+        const starsLength = stars.length;
+        let i;
+        stars.map((star) => {
+            star.onclick = () => {
+                i = stars.indexOf(star);
+                if (star.className === starClassInactive) {
+                    for (i; i >= 0; --i) stars[i].className = starClassActive;
+                } else {
+                    for (i; i < starsLength; ++i) stars[i].className = starClassInactive;
+                }
+            };
+        });
+    }
+    
+    executeRating(ratingStars);
+    let carIds
+    function modelOpen(carId) {
+        carIds = carId
+        
+    }
+
+    function submitReview() {
+        const activeStars = [...document.getElementsByClassName("fas")];
+        let reviews = document.getElementById("message-text").value;
+        let stars = activeStars.length - 1
+
+
+        
+        
+        fetch("/submit-review", {
+
+            // Adding method type
+            method: "POST",
+
+            // Adding body or contents to send
+            body: JSON.stringify({
+                carId: carIds,
+                rating: stars,
+                review: reviews
+
+            }),
+
+            // Adding headers to the request
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then((response) => {
+                response.json().then((data) => {
+                    if (data) {
+                        document.getElementById('closeBtn').click()
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top',
+                            showConfirmButton: false,
+                            timer: 3000,
+
+                        })
+
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Review posted successfully'
+                        })
+                    }
+                })
+            })
+        }
+    
+
+</script>

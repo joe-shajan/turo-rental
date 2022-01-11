@@ -1,0 +1,223 @@
+<div class="container-scroller">
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial -->
+
+        <!--sidebar.html -->
+        {{>admin-sidebar}}
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-6 grid-margin stretch-card">
+                        <div class="col-12 grid-margin">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Add Offers</h4>
+
+                                    {{#if invalidInput}}
+                                    <div class="alert alert-danger" role="alert">
+                                        Input fields must not be empty
+                                    </div>
+                                    {{/if}}
+
+                                    <form action="/coupon-management/add-offer" onsubmit="return validate()"
+                                        method="post">
+                                        <div class="form-group">
+                                            <label>Select Brand</label>
+                                            <select id="make" class="js-example-basic-single w-100" name="brand">
+                                                <option value="">select brand...</option>
+                                            </select>
+                                            <p id="makemsg" class="text-danger"></p>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label>Enter Percentage</label>
+                                                    <div class="d-flex align-items-end">
+
+                                                        <input type="number" class="form-control" id="percentage"
+                                                            name="percentage" />
+                                                        <p class="fs-5 ms-2 me-4">%</p>
+                                                    </div>
+                                                    <p id="percentagemsg" class="text-danger"></p>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+
+                                                <div class="form-group">
+                                                    <label>Enter expiry date</label>
+                                                    <input type="date" class="form-control" id="date" name="exprdate" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-7 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">All Offers</h4>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th>
+                                                    Brand
+                                                </th>
+                                                <th>
+                                                    Percentage
+                                                </th>
+                                                <th>
+                                                    Expiry date
+                                                </th>
+
+                                                <th>
+                                                    Actions
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each allOffers}}
+                                            <tr class="text-center tableRow">
+                                                <td>
+                                                    {{this.brand}}
+                                                </td>
+                                                <td>
+                                                    {{this.percentage}}
+                                                </td>
+                                                <td>
+                                                    {{this.exprdate}}
+
+                                                </td>
+
+
+                                                <td>
+                                                       <a onclick="return deleteOffer(event,'{{this._id}}')"
+                                                        title="Delete brand"> <i
+                                                            class="far fa-trash-alt ms-4 text-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+
+<script>
+    async function getBrandNames() {
+
+        url = '/cars-management/get-all-brands/'
+        let response = await fetch(url)
+        const data = await response.json()
+        return data
+    }
+
+    getBrandNames().then((data) => {
+        data.sort()
+        for (x of data) {
+            document.getElementById("make").innerHTML += '<option>' + x + '</option>'
+
+        }
+
+    })
+
+    console.log('djfkd')
+    var todayDate = new Date();
+    var month = todayDate.getMonth() + 1
+    var year = todayDate.getUTCFullYear() - 0;
+    var date = todayDate.getDate()
+    if (month < 10) {
+        month = "0" + month
+    }
+    if (date < 10) {
+        date = "0" + date;
+    }
+    var maxDatefrom = year + "-" + month + "-" + date;
+    console.log(maxDatefrom)
+    document.getElementById("date").setAttribute("value", maxDatefrom);
+    document.getElementById("date").setAttribute("min", maxDatefrom);
+
+    function validate() {
+        let make = document.getElementById("make").value;
+        let percentage = document.getElementById("percentage").value
+
+        if (make == "") {
+            document.getElementById("makemsg").innerHTML = "Select a Brand"
+            return false;
+        } else {
+            document.getElementById("makemsg").innerHTML = ""
+
+        }
+
+        if (percentage == "") {
+            document.getElementById("percentagemsg").innerHTML = "Enter percentage"
+            return false
+        } else {
+            document.getElementById("percentagemsg").innerHTML = ""
+
+        }
+        if (percentage < 1 || percentage >99) {
+            document.getElementById("percentagemsg").innerHTML = "Enter percentage between 1 and 99"
+            return false
+        } else {
+            document.getElementById("percentagemsg").innerHTML = ""
+
+        }
+
+    }
+
+    function deleteOffer(event, id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                let response = await fetch("/coupon-management/delete-offer/" + id)
+                let data =await response.json()
+                if (data) {
+                event.target.closest('.tableRow').style.display = 'none';
+
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+
+
+            }
+        })
+        console.log(id)
+    }
+</script>

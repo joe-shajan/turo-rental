@@ -1,0 +1,138 @@
+<section class="h-100 pt-4">
+    <div class="container py-3 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100 ">
+            <div class="col-md-6">
+                <div class="card card-registration my-4 border border-primary rounded-9 shadow">
+                    <div class="row g-0">
+                        <form onsubmit="return validation()" action="/signup" method="post">
+                            <div class="col-xl-12">
+                                <div class="card-body p-md-5 text-black">
+                                    <h3 class="mb-5 text-uppercase">Create new account here</h3>
+                                    {{#if userExists}}
+                                    <p class="text-danger">Phone No you have entered already exists</p>
+                                    {{/if}}
+                                    {{!-- first name and last name --}}
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-outline">
+                                                <input onblur="validation()" type="text" id="firstname"
+                                                    class="form-control" name="firstname" />
+                                                <label class="form-label" for="form3Example1m">First name</label>
+                                            </div>
+                                            <p id="firstnamemsg" style="color:red"> </p>
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <div class="form-outline">
+                                                <input onblur="validation()" type="text" name="lastname" id="lastname"
+                                                    class="form-control" />
+                                                <label class="form-label" for="form3Example1n">Last name</label>
+                                            </div>
+                                            <p id="lastnamemsg" style="color:red"> </p>
+                                        </div>
+                                    </div>
+                                    {{!-- phone no --}}
+                                    <div class="form-outline">
+                                        <input onblur="validation()" type="number" id="phoneno" name="phoneno"
+                                            class="form-control" />
+                                        <label class="form-label" for="form3Example99">Phone no</label>
+                                    </div>
+                                    <p id="phonenomsg" style="color:red"> </p>
+                                    {{!-- Email --}}
+                                    <div class="form-outline mt-4">
+                                        <input onblur="validation()" type="email" id="email" name="email"
+                                            class="form-control" />
+                                        <label class="form-label" for="form3Example99">Email</label>
+                                    </div>
+                                    <p id="emailmsg" style="color:red"> </p>
+
+                                    {{!-- password --}}
+                                    <div class="row mt-4">
+                                        <div class="col-md-6 mb-4">
+
+                                            <div class="form-outline">
+                                                <input onblur="validation()" type="password" id="password"
+                                                    name="password" class="form-control" />
+                                                <label class="form-label" for="form3Example1m1">Enter password</label>
+
+                                            </div>
+                                            <p id="passwordmsg" style="color:red"> </p>
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <div class="form-outline">
+                                                <input onblur="validation()" type="password" id="repassword"
+                                                    class="form-control" />
+                                                <label class="form-label" for="form3Example1n1">Re Enter password
+                                                </label>
+                                            </div>
+                                            <p id="repasswordmsg" style="color:red"> </p>
+                                        </div>
+                                    </div>
+
+                                    {{!-- <div class="form-outline mb-4">
+                                        <input type="date" id="form3Example9" name="dob" class="form-control" />
+                                        <label class="form-label" for="form3Example9">DOB</label>
+                                    </div> --}}
+
+                                    {{!-- <div class="form-outline mb-4">
+                                        <input type="text" id="form3Example8" name="address" class="form-control" />
+                                        <label class="form-label" for="form3Example8">Address</label>
+                                    </div> --}}
+
+
+                                    {{!--
+                                    <div class="row">
+                                        <div class="col-md-6 mb-4">
+
+                                            <select class="form-select form-select-sm" name="state">
+                                                <option value="1">State</option>
+                                                <option value="2">Kerala</option>
+                                                <option value="3">Tamilnadu</option>
+                                                <option value="4">Karnataka</option>
+                                            </select>
+
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+
+                                            <select class="form-select form-select-sm" name="city">
+                                                <option value="1">City</option>
+                                                <option value="2">Kochi</option>
+                                                <option value="3">Chennai</option>
+                                                <option value="4">Banglore</option>
+                                            </select>
+
+                                        </div>
+                                    </div> --}}
+
+                                    {{!-- <div class="small text-muted">Upload Profile Photo</div>
+                                    <div class="form-outline mb-2">
+                                        <input class="form-control mt-1" id="formFileLg" name="profilepicture"
+                                            type="file" />
+                                    </div>
+
+
+                                    <div class="small text-muted">Upload Photo of your Licence</div>
+                                    <div class="form-outline mb-2">
+                                        <input class="form-control mt-1" name="licenceimage" id="formFileLg"
+                                            type="file" />
+                                    </div> --}}
+
+                                    <div class="d-flex justify-content-center pt-3">
+
+                                        <input type="submit" name="submit" value="Sign up"
+                                            class="btn btn-primary ms-2"></input>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                        <div class="d-flex align-items-center justify-content-center pb-4">
+                            <p class="mb-0 me-2">Already have an  account?</p>
+                            <a href="/login" type="button" class="btn btn-outline-danger btn-sm rounded-1">Login</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

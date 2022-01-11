@@ -1,0 +1,156 @@
+{{!-- header with search --}}
+
+<section class="wishlist-section">
+    <div class="container">
+        <div class="p-5">
+            <h2 class="mt-5 ms-5 display-4">Your wishlist</h2>
+        </div>
+    </div>
+</section>
+
+{{!-- header with search --}}
+
+
+
+<section class="mt-5 mb-5">
+
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-10">
+                {{#if carsData}}
+                <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
+                    {{#each carsData}}
+                    <div class="col ">
+                        <div class="rounded shadow" style="height:270px">
+                            <div class="bg-image hover-zoom">
+                                <a class="text-decoration-none text-dark" href="/view-car-details/{{this._id}}">
+                                    <img src="/images/car-images/{{this.images.[0]}}" class="card-img-top" alt="..."
+                                        style="height: 190px; object-fit: cover;" />
+                                </a>
+                            </div>
+                            <div class="row ps-2 pe-2">
+                                <div class="col-7 col-md-7 d-flex align-items-start flex-column">
+
+                                    <h4 class="card-title mt-2 fw-bold">{{this.brand}} {{this.model}}
+                                        {{this.makeyear}}</h4>
+                                    <div class="d-flex mt-1 mb-1">
+
+                                        <p class="lh-1 fs-6 text-dark" id="{{this._id}}1">0</p>
+                                        <i class="fas fa-star text-primary ms-1"></i>
+                                        <p class="ms-4 lh-1"> {{this.fuel}} <i class="fas fa-gas-pump ms-1"></i></p>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="col-5 col-md-5 d-flex justify-content-around flex-column align-items-end">
+
+
+                                    <i onclick="return addToWishlist(event,'{{this._id}}')" id="{{this._id}}"
+                                        class="far fa-heart fa-lg  mt-2 me-2"></i>
+
+
+
+                                    <div class="d-flex mt-1">
+                                        <h4 class="card-title mt-1">₹ {{this.price_per_day}} </h4>
+                                        <p class="mt-1"> / day</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{/each}}
+                </div>
+                {{else}}
+                <h1 class="display-2">No cars in your wishlist</h1>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    fetch('/find-cars-inWishlist').then((response) => {
+        response.json().then((carIds) => {
+            if (carIds) {
+                for (x of carIds) {
+                    if (document.getElementById(x)) {
+                        document.getElementById(x).classList.add('fas', 'text-danger')
+                        document.getElementById(x).classList.remove('far')
+                    }
+                }
+            }
+        })
+    })
+
+    fetch('/get-average-review').then((response) => {
+        response.json().then((carData) => {
+            if (carData) {
+                for (x of carData) {
+
+                    if (document.getElementById(x.carId + '1')) {
+                        document.getElementById(x.carId + '1').innerHTML = x.averageRating
+                    }
+                }
+            }
+        })
+    })
+
+
+    async function addToWishlist(event, carId) {
+        url = "/add-to-wishlist/" + carId
+        let response = await fetch(url)
+        let data = await response.json()
+        if (data.noUser) {
+            Swal.fire({
+                title: 'Please Login to continue',
+                showCancelButton: true,
+                confirmButtonText: 'Login',
+
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    location.href = '/login'
+                }
+            })
+        }
+
+        if (data.addedToWishlist) {
+            console.log('added')
+            event.target.classList.add('fas', 'text-danger')
+            event.target.classList.remove('far')
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 3000,
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Added to wishlist',
+            })
+
+        }
+        if (data.removedFromWishlist) {
+            console.log("removed")
+
+            event.target.classList.add('far')
+            event.target.classList.remove('fas', 'text-danger')
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 2000,
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Removed from wishlist',
+            })
+        }
+    }
+</script>

@@ -1,0 +1,105 @@
+<div class="container-scroller">
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial -->
+
+        <!--sidebar.html -->
+        {{>admin-sidebar}}
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-10 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">All users</h4>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th>
+                                                    Profile <br> Image
+                                                </th>
+                                                <th>
+                                                    First name
+                                                </th>
+                                                <th>
+                                                    Last name
+                                                </th>
+                                                <th>
+                                                    Phone no
+                                                </th>
+                                                <th>
+                                                    Permission
+                                                </th>
+                                                <th>
+                                                    Verification
+                                                </th>
+                                                <th>
+                                                    View user <br> Profile
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each users}}
+                                            <tr class="text-center">
+                                                <td class="" style="">
+                                                    <div>
+                                                        {{#if this.profileImage}}
+                                                        <img src="/images/user-images/{{this.profileImage}}" alt="." 
+                                                            style="object-fit: contain !important;" />
+                                                            {{/if}}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    {{this.firstname}}
+                                                </td>
+                                                <td>
+                                                    {{this.lastname}}
+
+                                                </td>
+                                                <td>
+                                                    {{this.phoneno}}
+                                                </td>
+
+                                                <td>
+
+                                                    {{#if this.permission}}
+                                                    <P class="text-success">Granted</P>
+                                                    {{else}}
+                                                    <P class="text-danger">Denied</P>
+
+                                                    {{/if}}
+                                                </td>
+                                                <td>
+                                                    {{#if this.verified}}
+                                                    <P class="text-success">Verified</P>
+
+                                                    {{else}}
+                                                    <P class="text-danger">Not Verified</P>
+
+                                                    {{/if}}
+                                                </td>
+                                                <td>
+                                                    <a href="/user-management/view-user-profile/{{this._id}}"
+                                                        class="text-decoration-none" title="View Profile"><i
+                                                            class="far fa-eye"></i>View Profile</a>
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>

@@ -1,0 +1,102 @@
+<div class="container-scroller">
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial -->
+
+        <!--sidebar.html -->
+        {{>admin-sidebar}}
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+
+                                    <h4 class="card-title m-0 pe-2">All cities in {{city.state}}</h4>
+                                        </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th>
+                                                    image
+                                                </th>
+                                                <th>
+                                                    city
+                                                </th>
+                                        
+                                                <th>
+                                                    Delete
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each city.cities}}
+                                            <tr class="text-center tableRow">
+                                                <td class="p-1" style="">
+                                                    <img src="/images/location-images/{{this.image}}" alt="">
+                                                </td>
+                                                
+                                                <td>
+                                                    {{this.city}}
+                                
+                                                   
+                                                </td>
+                                                
+                                                <td>
+                                                      <a onclick="return deleteCity(event,'{{this.city}}','{{../city.state}}')"
+                                                        title="Delete state"> <i
+                                                            class="far fa-trash-alt ms-4 text-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<script>
+      function deleteCity(event, city,state) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                let response = await fetch("/location-management/delete-city/" + city+'/'+state)
+                let data =await response.json()
+                if (data) {
+                event.target.closest('.tableRow').style.display = 'none';
+
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+
+
+            }
+        })
+        
+    }
+</script>

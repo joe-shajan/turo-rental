@@ -1,0 +1,230 @@
+<section class="checkout-section d-flex align-items-end">
+    <div class="container ">
+        <div class="row d-flex justify-content-center ">
+            <div class="col-11  col-md-8  d-flex bg-white">
+                <div class="col-4 ">
+
+                    <img src="/images/car-images/{{carData.images.[0]}}" class="img-fluid" style="object-fit: cover;">
+                </div>
+                <div class="col-8 ps-4 d-flex flex-column justify-content-around">
+                    <p class="display-5 fw-bold">{{carData.brand}} {{carData.model}} {{carData.makeyear}}</p>
+                    <div>
+
+                        <p class=" fw-bold mb-0">From <span class=""> &nbsp : {{bookingDate.from}}
+                            </span></p>
+                        <p class=" fw-bold mb-0">To &nbsp &nbsp &nbsp &nbsp : {{bookingDate.to}}
+                        </p>
+                    </div>
+                    <p class="mb-0">Pick up and drop address : <span class="fw-bold"> {{carData.pick_up_address.address}}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section>
+    <div class="container py-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row d-flex justify-content-center pb-5">
+                    <div class="col-md-5  mb-4 mb-md-0">
+
+                        <div class="pt-4">
+
+
+                            <p class="fw-bold mb-3">Enter Coupon code</p>
+                            <div class="row mb-4">
+                                <div class="col-7">
+                                    <div class="form-outline">
+                                        <input type="text" id="coupon" name="coupon"
+                                            class="form-control form-control" />
+                                        <label class="form-label" for="coupon">eg: xmas50</label>
+                                    </div>
+                                </div>
+                                <div class="col-4 d-flex align-item-center mb-2">
+                                    <button onclick="return applyCoupon()" id="applyBtn"
+                                        class="btn btn-outline-primary btn-sm rounded-2">apply coupon</button>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <p class="fw-bold mb-2">Select Payment Gateway</p>
+                            <div class="row mb-4">
+                                <div class="col-7 ps-5">
+                                    <!-- Default radio -->
+                                    <div class="form-check">
+                                        <input onclick="return selectRazorpay()" class="form-check-input" type="radio" name="flexRadioDefault"
+                                            id="flexRadioDefault2" checked />
+                                        <label class="form-check-label" for="flexRadioDefault2"> <img src="/images/pngegg.png" alt="" style="width:100px ; height:auto"srcset="">
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input onclick="return selectPaypal()" class="form-check-input" type="radio" name="flexRadioDefault"
+                                            id="flexRadioDefault1" />
+                                        <label class="form-check-label" for="flexRadioDefault1"> <img src="/images/pngegg (1).png" alt="" style="width:80px ; height:auto"srcset=""> </label>
+                                    </div>
+
+                                    <!-- Default checked radio -->
+                                </div>
+                            </div>
+
+                            <button onclick="return createOrder()" type="button" id="rzp-button1"
+                                class="btn btn-primary btn-block ">Proceed to
+                                payment
+                            </button>
+                            <a type="button" id="paypal" href="/checkout-paypal/"
+                                class="btn btn-primary btn-block" style="display: none">Proceed to
+                                payment
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5 col-xl-4 offset-xl-1">
+                        <div class="py-4 d-flex justify-content-end">
+                        </div>
+                        <div class="rounded d-flex flex-column p-2" style="background-color: #f8f9fa;">
+                            <div class="p-2 me-3">
+                                <h4>Booking Recap</h4>
+                            </div>
+                            <div class="border-top px-2 mx-2"></div>
+                            
+                            <div class="p-2 d-flex">
+                                <div class="col-8">
+                                   Insurance Responsibility <span class="fa fa-question-circle text-dark"></span>
+                                </div>
+                                <div class="ms-auto"><b>₹ 1000</b></div>
+                            </div>
+                            <div class="p-2 d-flex">
+                                <div class="col-8">
+                                    Total Rent Amount
+                                </div>
+                                <div class="ms-auto"><b>₹ {{bookingAmt}}</b></div>
+                            </div>
+
+                            <div class="border-top px-2 mx-2"></div>
+                            <div class="p-2 d-flex">
+                                <div class="col-8"><b>Total</b></div>
+                                <div class="ms-auto"><b class=""> ₹ <span id="total">{{totalAmt}}</span></b>
+                                </div>
+                            </div>
+                            <div class="p-2 d-flex">
+                                <div class="col-8"><b>Discount</b></div>
+                                <div class="ms-auto"><b class="text-success">- ₹ <span id="discount">0</span></b>
+                                </div>
+                            </div>
+                            <div class="border-top px-2 mx-2"></div>
+
+                            <div class="p-2 d-flex pt-3">
+                                <div class="col-8"><b>Total Booking Amount</b></div>
+                                <div class="ms-auto"><b class="fs-5"> ₹ <span
+                                            id="totalBookingAmt">{{totalAmt}}</span></b>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+function selectRazorpay(){
+
+    document.getElementById('paypal').style.display = 'none';
+    document.getElementById('rzp-button1').style.display = 'block';
+}
+
+function selectPaypal(){
+    document.getElementById('rzp-button1').style.display = 'none';
+    document.getElementById('paypal').style.display = 'block';
+}
+
+    async function createOrder() {
+        let response = await fetch('/book')
+        let data = await response.json()
+        var options = {
+            "key": "rzp_test_n5Hat1UWJ9m7c3", // Enter the Key ID generated from the Dashboard
+            "name": "Turo",
+            "description": "Test Transaction",
+            "image": "https://1000logos.net/wp-content/uploads/2020/09/Turo-logo-640x233.png",
+            "order_id": data.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "callback_url": "/is-order-complete",
+            "prefill": {
+                "name": "Joe shajan",
+                "email": "joeshajan@gmail.com",
+                "contact": "9074955635"
+            },
+
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+
+
+
+
+    async function applyCoupon() {
+        let couponCode = document.getElementById('coupon').value
+        let total = parseInt(document.getElementById('total').innerText)
+        let response = await fetch('/apply-coupon/' + couponCode)
+        let data = await response.json()
+        console.log(data.response)
+        if (data.response) {
+
+            console.log(total, data.newAmount)
+            let offerAmt = total - data.newAmount
+            document.getElementById("discount").innerHTML = offerAmt;
+            document.getElementById("totalBookingAmt").innerHTML = data.newAmount;
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 3000,
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Coupon applied'
+            })
+        } else {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 3000,
+
+            })
+
+            Toast.fire({
+                icon: 'error',
+                title: 'Invalid coupon'
+            })
+        }
+        if(data.couponUsed){
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 3000,
+
+            })
+
+            Toast.fire({
+                icon: 'error',
+                title: 'Coupon alredy used'
+            })
+        }
+
+    }
+
+
+</script>

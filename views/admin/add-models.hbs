@@ -1,0 +1,203 @@
+<div class="container-scroller">
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial -->
+
+        <!--sidebar.html -->
+        {{>admin-sidebar}}
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-6 grid-margin stretch-card">
+                        <div class="col-12 grid-margin">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Add new brand and model</h4>
+                                    <div style="height: 50px; width: 50px;">
+                                        <img id="logo" src="" class="img-fluid" style="object-fit: cover;">
+                                    </div>
+
+                                    {{#if invalidInput}}
+                                    <div class="alert alert-danger" role="alert">
+                                        Input fields must not be empty
+                                    </div>
+                                    {{/if}}
+
+                                    <form action="/cars-management/add-models" method="post">
+                                        <div class="form-group">
+                                            <label>Select car brand</label>
+                                            <select id="make" name="make" oninput="selectMake()"
+                                                class="js-example-basic-single w-100">
+
+                                            </select>
+                                            <p class="text-danger" id="makemsg"></p>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Select car type</label>
+                                            <select id="type" name="type" oninput="selectType()"
+                                                class="js-example-basic-single w-100">
+
+                                            </select>
+                                            <p class="text-danger" id="typemsg"></p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Select car model</label>
+                                            <select id="model" name="model" oninput="selectModel()"
+                                                class="js-example-basic-single w-100">
+
+                                            </select>
+                                            <p class="text-danger" id="modelmsg"></p>
+
+                                        </div>
+                                        <div class="form-group ">
+                                            <label>Select manufacturing year</label>
+                                            <select id="year" name="year" class="js-example-basic-single w-100">
+
+                                            </select>
+                                            <p class="text-danger" id="yearmsg"></p>
+
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+
+<script>
+
+
+    let query = {}
+
+    const details = {
+        "method": "GET",
+        "headers": {
+            "x-rapidapi-host": "car-data.p.rapidapi.com",
+            "x-rapidapi-key": "f370b75d83msh9c534c18b75391cp164cc6jsnaa39856407ec"
+        }
+    }
+
+    async function getMake() {
+        url = "https://car-data.p.rapidapi.com/cars/makes"
+
+        let response = await fetch(url, details)
+        const data = await response.json()
+        return data
+    }
+
+    async function getType() {
+        url = "https://car-data.p.rapidapi.com/cars/types"
+
+        let response = await fetch(url, details)
+        const data = await response.json()
+        return data
+
+    }
+
+    async function getModel(make, type) {
+        api = "https://car-data.p.rapidapi.com/cars?"
+        limit = "limit=50"
+        page = "&page=0"
+        make = "&make=" + make
+        type = "&type=" + type
+        url = api + limit + page + make + type
+
+        let response = await fetch(url, details)
+        const data = await response.json()
+        return data
+    }
+
+    async function getYear(make, type, model) {
+        api = "https://car-data.p.rapidapi.com/cars?"
+        limit = "limit=50"
+        page = "&page=0"
+        make = "&make=" + make
+        type = "&type=" + type
+        model = "&model=" + model
+        url = api + limit + page + make + type + model
+
+        let response = await fetch(url, details)
+        const data = await response.json()
+        return data
+    }
+
+    getMake().then((data) => {
+        data.sort()
+        for (i = 0; i < data.length; i++) {
+            document.getElementById("make").innerHTML += '<option>' + data[i] + '</option>'
+        }
+    })
+
+    async function getImage(make) {
+
+        let response = await fetch('/cars-management/brand-image/' + make + '')
+        const url = await response.json()
+        document.getElementById("logo").src = url.url;
+
+    }
+
+    function selectMake() {
+        query.make = document.getElementById("make").value
+        getImage(query.make)
+        document.getElementById("type").innerHTML = ''
+        document.getElementById("model").innerHTML = ''
+        document.getElementById("year").innerHTML = ''
+
+        getType().then((data) => {
+            console.log(data.length);
+            for (i = 0; i < data.length; i++) {
+                document.getElementById("type").innerHTML += '<option>' + data[i] + '</option>'
+            }
+        })
+    }
+
+    function selectType() {
+        query.type = document.getElementById("type").value
+        document.getElementById("model").innerHTML = ''
+        document.getElementById("year").innerHTML = ''
+
+        getModel(query.make, query.type).then((data) => {
+            let models = []
+            for (i = 0; i < data.length; i++) {
+                models.push(data[i].model)
+            }
+            let model = [...new Set(models)]
+            model.sort()
+            for (i = 0; i < model.length; i++) {
+                document.getElementById("model").innerHTML += '<option>' + model[i] + '</option>'
+            }
+
+        })
+    }
+
+    function selectModel() {
+        query.model = document.getElementById("model").value
+        document.getElementById("year").innerHTML = ''
+
+        getYear(query.make, query.type, query.model).then((data) => {
+            let year = []
+            for (i = 0; i < data.length; i++) {
+                year.push(data[i].year)
+            }
+            year.sort()
+            for (i = 0; i < year.length; i++) {
+                document.getElementById("year").innerHTML += '<option>' + year[i] + '</option>'
+            }
+        })
+    }
+</script>

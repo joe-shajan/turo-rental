@@ -1,0 +1,54 @@
+<section class="upcomming-booking-section d-flex justify-content-center align-items-end">
+    {{#if tripData}}
+    <h3>Cancelled trips</h3>
+    {{else}}
+    <h3>No Cancelled Trips </h3>
+    {{/if}}
+</section>
+<div class="container ">
+    <div class="row d-flex justify-content-center pb-5">
+
+        {{#each tripData}}
+        <div class="col-11  col-md-8 p-0 pe-2  d-flex bg-white shadow mt-5 rounded-1">
+            <div class="row">
+                <div class="col-5 col-md-5 ">
+                    <div style="object-fit: cover; height: 100% !important; width: 100% !important">
+
+                    <img src="/images/car-images/{{this.cars.images.[0]}}" class="img-fluid">
+                    </div>
+                </div>
+                <div class="col-md-4 col-7 ps-4 d-flex flex-column justify-content-around">
+                    <p class="display-5 fw-bold">{{this.cars.brand}} {{this.cars.model}}
+                        {{this.cars.makeyear}}</p>
+                    <div>
+
+                        <p class=" fw-bold mb-0">From <span class=""> &nbsp :{{this.from}} &nbsp &nbsp
+                                {{time.from.[1]}}</span></p>
+                        <p class=" fw-bold mb-0">To &nbsp &nbsp &nbsp &nbsp : {{this.to}} &nbsp &nbsp
+                            {{time.to.[1]}}</p>
+                    </div>
+                    <p class="mb-0">Pick up and drop address : <span class="fw-bold">
+                            {{this.cars.pick_up_address.address}}</span>
+                    </p>
+                </div>
+                <div class="col-md-3 col-12 mt-3 mt-md-0 ps-4 d-flex flex-md-column justify-content-around">
+                    <div>
+                        <p class="lh-1">Booking Amount</p>
+                        <p class="fs-6 fw-bold">₹ {{this.totalAmount}}</p>
+                    </div>
+                    <div>
+                        <p class="lh-1">Cancellation Fee</p>
+                        <p class="fs-6 fw-bold">₹ {{this.cancellationFee}}</p>
+                    </div>
+                    <div>
+                        <p class="lh-1">Refund Amount</p>
+                        <p class="fs-6 fw-bold">₹ {{this.refundAmount}}</p>
+                    </div>
+
+                </div>
+           </div>
+        </div>
+
+        {{/each}}
+    </div>
+</div>

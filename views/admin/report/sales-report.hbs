@@ -1,0 +1,271 @@
+<!-- partial -->
+<div class="container-fluid page-body-wrapper">
+    <!-- partial -->
+
+    <!--sidebar.html -->
+    {{>admin-sidebar}}
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-10 grid-margin stretch-card">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+
+
+                                {{#if invalidInput}}
+                                <div class="alert alert-danger" role="alert">
+                                    Input fields must not be empty
+                                </div>
+                                {{/if}}
+
+                                <form action="/report/sales-report-by-date" method="get">
+
+                                    <div class="row">
+                                        <div class=" col-md-3">
+
+                                            <div class="form-group">
+                                                <label>Enter start date</label>
+                                                <input type="date" oninput="return fromDateSelect()"
+                                                    class="form-control" id="from" name="from" required />
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+
+                                            <div class="form-group">
+                                                <label>Enter end date</label>
+                                                <input type="date" class="form-control" id="to" name="to" required />
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 d-flex align-items-center">
+                                            <div class="text-center">
+                                                <button type="submit" class="btn btn-sm btn-primary btn-icon-text">Get
+                                                    Report</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 d-flex justify-content-end align-items-center">
+
+                                            {{!-- <button type="button" class="btn btn-danger btn-icon-text">
+                                                <i class="ti-download btn-icon-prepend"></i>
+                                                Upload
+                                            </button> --}}
+                                            {{#if salesReport}}
+                                            <button type="button"
+                                                    class="btn btn-success me-1 rounded-1 btn-sm btn-icon-text"
+                                                    onclick="ExportToExcel('xlsx')"> Excel <i
+                                                        class="ti-download btn-icon-append"></i></button>
+
+                                                <button type="button" onclick="return print()"
+                                                    class="btn btn-info  rounded-1 btn-sm btn-icon-text">
+                                                     PDF
+                                                    <i class="ti-download btn-icon-append"></i>
+                                                </button>
+                                            {{/if}}
+
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center" id="element-to-print">
+                <div class="ps-5">
+
+                    <p class="fs-6">Total Revenue : <span class="fw-bold fs-5"> ₹ {{sales.totalRevenue}}</span></p>
+                    <p class="fs-6">Total Profit &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : <span class="fw-bold fs-5">₹
+                            {{sales.profit}}</span></p>
+                </div>
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card ">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between pe-4">
+                                <div style="width: 100px;">
+                                    <img src="/images/turo-logo.jpg" class="img-fluid" alt="" srcset="">
+
+                                </div>
+                                <div>
+                                    <h4 class="card-title">Sales Report By Car</h4>
+                                </div>
+                                <div>
+                                    {{#if search}}
+                                    {{#if salesReport}}
+                                    <p class="fw-bold fs-6">From: &nbsp{{search.from}}</p>
+                                    <p class="fw-bold fs-6">To: &nbsp &nbsp &nbsp &nbsp {{search.to}}</p>
+                                    {{/if}}
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover text-center" id="myTable"> 
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Image
+                                            </th>
+                                            <th>
+                                                Brand
+                                            </th>
+                                            <th>
+                                                Model
+                                            </th>
+                                            <th>
+                                                Reg no
+                                            </th>
+                                            <th>
+                                                Total Trips
+                                            </th>
+
+                                            <th>
+                                                Location
+                                            </th>
+                                            <th>
+                                                Rent
+                                            </th>
+                                            <th>
+                                                Revenue
+                                            </th>
+                                            <th>
+                                                margin
+                                            </th>
+                                            <th>
+                                                Profit
+                                            </th>
+
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each salesReport}}
+                                        <tr>
+                                            <td class="py-1" style="border-radius: 1%;">
+                                                <img src="/images/car-images/{{this.cars.images.[0]}}" alt="image" />
+                                            </td>
+                                            <td>
+                                                {{this.cars.brand}}
+                                            </td>
+                                            <td>
+                                                {{this.cars.model}}
+                                            </td>
+                                            <td>
+                                                {{this.cars.registrationNo}}
+                                            </td>
+                                            <td>
+                                                {{this.totalTrips}}
+                                            </td>
+                                            <td>
+                                                {{this.cars.city}}
+                                            </td>
+                                            <td>
+                                                ₹ {{this.cars.price_per_day}}<span> /day</span>
+                                            </td>
+                                            <td>
+                                                ₹ {{this.revenue}}
+                                            </td>
+                                            <td>
+                                                15%
+                                            </td>
+                                            <td>
+                                                ₹ {{this.profit}}
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+</div>
+<!-- page-body-wrapper ends -->
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+    integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+
+<script>
+
+    function fromDateSelect() {
+        let fromDate = document.getElementById('from').value
+        var date = new Date(fromDate);
+
+        var month = date.getMonth() + 1
+        var year = date.getUTCFullYear() - 0;
+        var tdatefrom = date.getDate() + 1
+        if (month < 10) {
+            month = "0" + month
+        }
+        if (tdatefrom < 10) {
+            tdatefrom = "0" + tdatefrom;
+        }
+        var maxDatefrom = year + "-" + month + "-" + tdatefrom;
+        document.getElementById("to").setAttribute("value", maxDatefrom);
+        document.getElementById("to").setAttribute("min", maxDatefrom);
+
+
+
+    }
+    var todayDate = new Date();
+    var month = todayDate.getMonth() + 1
+    var year = todayDate.getUTCFullYear() - 0;
+    var tdatefrom = todayDate.getDate() -1
+    var tdateto = todayDate.getDate() 
+    if (month < 10) {
+        month = "0" + month
+    }
+    if (tdatefrom < 10) {
+        tdatefrom = "0" + tdatefrom;
+    }
+    if (tdateto < 10) {
+        tdateto = "0" + tdateto;
+    }
+    var maxDatefrom = year + "-" + month + "-" + tdatefrom;
+    document.getElementById("from").setAttribute("value", maxDatefrom);
+    document.getElementById("from").setAttribute("max", maxDatefrom);
+
+
+    var maxDateto = year + "-" + month + "-" + tdateto;
+    document.getElementById("to").setAttribute("value", maxDateto);
+    document.getElementById("to").setAttribute("max", maxDateto);
+
+    function print() {
+        var element = document.getElementById('element-to-print');
+        var opt = {
+            margin: 1,
+            filename: 'Sales-report.pdf',
+            image: { type: 'jpeg', quality: 1 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'b4', orientation: 'landscape' }
+        };
+        var worker = html2pdf().set(opt).from(element).save();
+
+    }
+    function ExportToExcel(type, fn, dl) {
+        var elt = document.getElementById('myTable');
+        var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+        return dl ?
+            XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+            XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
+    }
+</script>

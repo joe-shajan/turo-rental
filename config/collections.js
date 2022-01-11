@@ -1,0 +1,18 @@
+module.exports={
+    USER_COLLECTION:'userdata',
+    ADMIN_COLLECTION:'admindata',
+    CARS_COLLECTION:'cardata',
+    BRAND_LOGO:'brandLogo',
+    MODELS:'models',
+    BANNER:'banner',
+    NEW_BOOKINGS:'newBookings',
+    CANCELLED_BOOKINGS:'cancelledBookings',
+    ON_GOING_TRIPS:'onGoingTrips',
+    COMPLETED_TRIPS:'completedTrips',
+    ALL_LOCATIONS:'allLocation',
+    CITIES:'cities',
+    COUPON:'coupon',
+    WISHLIST:'wishlist',
+    REVIEWS:'reviews',
+    OFFERS:'offers',
+}

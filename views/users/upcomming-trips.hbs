@@ -1,0 +1,103 @@
+<section class="upcomming-booking-section d-flex justify-content-center align-items-end">
+    {{#if paymentSuccessful}}
+    <script>
+        Swal.fire({
+
+            icon: 'success',
+            title: 'payment successful',
+            showConfirmButton: false,
+            timer: 2000
+        })
+    </script>
+
+    {{/if}}
+    {{#if bookingData}}
+    <h3>Upcomming Trips</h3>
+    {{else}}
+    <h3>No Upcomming Trips </h3>
+    {{/if}}
+</section>
+
+<div class="container ">
+    <div class="row d-flex justify-content-center pb-5">
+
+        {{#each bookingData}}
+
+        <div class="col-11  col-md-8 p-0 pe-2  d-flex bg-white shadow mt-5 rounded-1 main">
+            <div class="col-3 col-md-4 ">
+
+                <img src="/images/car-images/{{this.cars.images.[0]}}" class="img-fluid" style="object-fit: cover;">
+            </div>
+            <div class="col-md-6 col-6 ps-2 ps-md-4 d-flex flex-column justify-content-around">
+                <p class="display-5 fw-bold">{{this.cars.brand}} {{this.cars.model}}
+                    {{this.cars.makeyear}}</p>
+                <div>
+
+                    <p class=" fw-bold mb-0">From <span id="from"> &nbsp :{{this.from}} &nbsp &nbsp
+                            {{time.from.[1]}}</span></p>
+                    <p class=" fw-bold mb-0">To &nbsp &nbsp &nbsp &nbsp : {{this.to}} &nbsp &nbsp
+                        {{time.to.[1]}}</p>
+                </div>
+                <p class="mb-0">Pick up and drop address : <a
+                        href="http://maps.google.com/?q={{this.cars.pick_up_address.latitude}},{{this.cars.pick_up_address.longitude}}"
+                        target="_blank" class="text-decoration-none">{{this.cars.pick_up_address.address}}</a>
+                </p>
+                {{#if timeToCancel}}
+                <p class="text-danger">
+                    Booking will be Cancelled in 
+                    {{this.timeToCancel}}</p>
+
+                {{/if}}
+                {{#if timeToStart}}
+                <p class="fw-bold text-success">Trip Starts in {{this.timeToStart}}</p>
+                
+
+                {{/if}}
+            </div>
+            <div class="col-md-2 col-3 ps-2 ps-md-4 d-flex flex-column justify-content-around">
+                <p class="display-5 fw-bold">₹ {{this.totalAmount}}</p>
+
+                <a onclick="return cancelTrip(event,'{{this._id}}')"
+                    class="btn btn-outline-danger btn-sm rounded-4">cancel</a>
+            </div>
+        </div>
+        {{/each}}
+
+    </div>
+</div>
+
+
+<script>
+    async function cancelTrip(event, id) {
+
+
+        let response1 = await fetch('/bookings/get-booking-details/' + id)
+        let amount = await response1.json()
+        console.log(amount)
+
+        const c = await Swal.fire({
+            title: 'Do you want to cancel this booking?',
+            text: "cancellation fee : " + amount.cancellationFee + " Refund Amount : " + amount.refundAmount,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'yes'
+        })
+
+        if (c.isConfirmed) {
+            let response = await fetch('/cancel-trip/' + id)
+            let data = await response.json()
+            console.log(data)
+            if (data) {
+                console.log(event.target.closest('.main'))
+                event.target.closest('.main').classList.add('d-none')
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+        }
+    }
+</script>

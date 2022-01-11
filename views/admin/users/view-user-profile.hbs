@@ -1,0 +1,140 @@
+<div class="container-scroller">
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial -->
+
+        <!--sidebar.html -->
+        {{>admin-sidebar}}
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="container">
+                    <div class="row d-flex justify-content-center">
+
+                        <div class="col-lg-3">
+                            <div class="card mb-4">
+                                <div class="card-body text-center">
+                                    <div id="profile">
+                                        {{#if userData.profileImage}}
+                                        <img src="/images/user-images/{{userData.profileImage}}" alt="">
+                                        {{else}}
+                                        <img src="https://icon-library.com/images/profile-image-icon/profile-image-icon-24.jpg"
+                                            alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                        {{/if}}
+                                    </div>
+                                    <h5 class="my-4">{{userData.firstname}} {{userData.lastname}} {{#if
+                                        userData.verified}} <span><i
+                                                class="fas fa-check text-primary"></i></span>{{/if}}</h5>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-6">
+
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Full Name</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <p class="text-muted mb-0">{{userData.firstname}} {{userData.lastname}}</p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Email</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <p class="text-muted mb-0">{{userData.email}}</p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Phone</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <p class="text-muted mb-0">{{userData.phoneno}}</p>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Address</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <p class="text-muted mb-0">{{userData.address}}</p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Licence Photo</p>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div id="licence" class="mb-2">
+                                                {{#if userData.licenceImage}}
+                                                <img src="/images/user-images/{{userData.licenceImage}}" alt="">
+                                                {{/if}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-sm-12 text-center">
+                                            {{#if userData.verified}}
+                                            {{#if userData.permission}}
+                                            <a onclick="block('{{userData._id}}')" id="block"
+                                                class="btn btn-danger btn-sm rounded-1 shadow-sm">Block user</a>
+                                              
+                                            {{else}}
+                                     
+                                            <a href="/user-management/unblock-user/{{userData._id}}" id="unblock2"
+                                                class="btn btn-success btn-sm rounded-1 shadow-sm">UnBlock user</a>
+                                            {{/if}}
+                                            {{else}}
+                                            <a href="/user-management/verify-user/{{userData._id}}"
+                                                class="btn btn-success btn-sm rounded-1 shadow-sm">verify user</a>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<script>
+    async function block(id) {
+        console.log(id)
+        let response = await fetch('/user-management/block-user/' + id)
+        let data = await response.json()
+        if (data) {
+
+            location.reload()
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+            })
+           
+       
+             Toast.fire({
+                icon: 'success',
+                title: 'Blocked user successfully'
+            })
+        }
+    }
+</script>

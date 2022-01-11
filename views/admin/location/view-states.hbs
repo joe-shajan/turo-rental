@@ -1,0 +1,105 @@
+<div class="container-scroller">
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial -->
+
+        <!--sidebar.html -->
+        {{>admin-sidebar}}
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">All states</h4>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr class="text-center">
+                                                
+                                                <th>
+                                                    State
+                                                </th>
+                                                <th>
+                                                    No of Cities
+                                                </th>
+                                                <th>
+                                                    View
+                                                </th>
+                                                <th>
+                                                    Actions
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each states}}
+                                            <tr class="text-center tableRow">
+                            
+                                                <td>
+                                                    {{this.state}}
+                                                </td>
+                                                <td>
+                                                    {{this.noOfCities}}
+                                           
+                                                </td>
+                                                <td>
+                                                     <a class="text-pimary text-decoration-none" href="/location-management/view-cities/{{this._id}}">
+                                            Show all Cities
+                                            </a>
+                                                </td>
+                                            
+                                                <td>
+                                                   <a onclick="return deleteState(event,'{{this._id}}')"
+                                                        title="Delete state"> <i
+                                                            class="far fa-trash-alt ms-4 text-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<script>
+      function deleteState(event, id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                let response = await fetch("/location-management/delete-state/" + id)
+                let data =await response.json()
+                if (data) {
+                event.target.closest('.tableRow').style.display = 'none';
+
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+
+
+            }
+        })
+        
+    }
+</script>
