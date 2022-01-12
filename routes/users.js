@@ -10,7 +10,7 @@ var { ObjectId } = require('mongodb')
 const prettyMilliseconds = require('pretty-ms');
 require('dotenv').config()
 
-console.log(process.env.PAYPAL_CLIENT_SECRET)
+
 
 const serviceSid = process.env.TWILLO_SERVICESID
 const accountSid = process.env.TWILLO_ACCOUNTSID
