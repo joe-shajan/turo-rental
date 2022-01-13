@@ -18,30 +18,29 @@
               <div class="tab-content tab-content-basic">
                 <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                   <div class="row d-flex justify-content-center">
-                    <div class="col-sm-10">
+                    
                       {{!-- over viewe boxes --}}
-                      <div class="statistics-details d-flex align-items-center justify-content-between">
-                        <div class="text-center rounded-5 shadow p-2 ps-5 pe-5">
+                      <div class="row gap-3 statistics-details d-flex align-items-center justify-content-between">
+                        
+                        <div class="col-5 col-md-3 text-center bg-white rounded-5 shadow-sm p-3">
                           <p class="statistics-title">Total Revenue</p>
                           <h3 class="rate-percentage">₹ {{sales.totalRevenue}}</h3>
                         </div>
-                        <div class="text-center rounded-5 shadow p-2 ps-5 pe-5">
+                        <div class="col-5 col-md-3 text-center bg-white rounded-5 shadow-sm p-3">
                           <p class="statistics-title">Total Profit</p>
                           <h3 class="rate-percentage">₹ {{sales.profit}}</h3>
                         </div>
-                        <div class="text-center rounded-5 shadow p-2 ps-5 pe-5">
+                        <div class="col-5 col-md-2 text-center bg-white rounded-5 shadow-sm p-3">
                           <p class="statistics-title">Total Cars</p>
                           <h3 class="rate-percentage">{{carsCount}}</h3>
                         </div>
-                        <div class="text-center rounded-5 shadow p-2 ps-5 pe-5">
+                        <div class="col-5 col-md-2 text-center bg-white rounded-5 shadow-sm p-3">
                           <p class="statistics-title">Total Users</p>
                           <h3 class="rate-percentage">{{usersCount}}</h3>
                         </div>
-                        
+                        </div>
 
-                      </div>
-
-                    </div>
+                     
                   </div>
                   {{!-- charts --}}
                   <div class="row">
