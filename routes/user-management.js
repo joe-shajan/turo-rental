@@ -2,14 +2,21 @@ var express = require('express');
 var router = express.Router();
 var userHelpers = require('../helpers/user-helpers')
 
+function redirectToLogin(req, res, next) {
+    if (!req.session.admin) {
+        res.redirect('/admin/login')
+    } else {
+        next()
+    }
+}
 
-router.get('/all-users',(req,res)=>{
+router.get('/all-users',redirectToLogin,(req,res)=>{
     userHelpers.getAllUsers().then((users)=>{
         res.render('admin/users/all-users',{admin:true,users})
     })
 })
 
-router.get('/blocked-users',(req,res)=>{
+router.get('/blocked-users',redirectToLogin,(req,res)=>{
     res.render('admin/users/blocked-users',{admin:true})
 })
 

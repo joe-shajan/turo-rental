@@ -1,23 +1,20 @@
 var express = require('express');
 var router = express.Router();
 const locationHelpers = require('../helpers/location-helpers')
-const multer = require("multer");
 const path = require('path');
-const fs  = require('fs')
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "public/images/location-images");
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
+const fs = require('fs')
+
+
+function redirectToLogin(req, res, next) {
+    if (!req.session.admin) {
+        res.redirect('/admin/login')
+    } else {
+        next()
     }
-});
-
-var upload = multer({ storage: storage });
-var uploadMultiple = upload.fields([{ name: 'image1', maxCount: 1 }])
+}
 
 
-router.get('/add-location', (req, res) => {
+router.get('/add-location',redirectToLogin, (req, res) => {
     res.render('admin/location/add-location', { admin: true })
 })
 
@@ -37,7 +34,7 @@ router.get('/get-city/:state', (req, res) => {
 
 
 router.post('/add-city', (req, res) => {
-    
+
     let base64String = req.body.image
     let base64Image = base64String.split(';base64,').pop();
     let filename = Date.now() + '-' + Math.round(Math.random() * 1E9) + '.png'
@@ -49,7 +46,7 @@ router.post('/add-city', (req, res) => {
     })
 })
 
-router.get('/view-states', async (req, res) => {
+router.get('/view-states',redirectToLogin, async (req, res) => {
     let states = await locationHelpers.showState()
     res.render('admin/location/view-states', { admin: true, states })
 })
@@ -67,10 +64,10 @@ router.get('/view-cities/:id', async (req, res) => {
 })
 
 router.get('/delete-city/:city/:state', async (req, res) => {
-   locationHelpers.deleteCity(req.params.state,req.params.city).then(() => {
-       res.json(true)
-   })
-    
+    locationHelpers.deleteCity(req.params.state, req.params.city).then(() => {
+        res.json(true)
+    })
+
 })
 
 router.get('/get-all-cities/', (req, res) => {

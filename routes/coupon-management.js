@@ -3,8 +3,15 @@ var router = express.Router();
 var couponHelpers = require('../helpers/coupon-helpers')
 var moment = require('moment')
 
+function redirectToLogin(req, res, next) {
+    if (!req.session.admin) {
+      res.redirect('/admin/login')
+    } else {
+      next()
+    }
+  }
 
-router.get('/add-coupon',async(req,res)=>{
+router.get('/add-coupon',redirectToLogin,async(req,res)=>{
     let allCoupons = await couponHelpers.getAllCoupons()
     for(x of allCoupons){
         x.exprdate = moment(x.exprdate).format('ll')
@@ -33,7 +40,7 @@ router.get('/delete-coupon/:id',async(req,res)=>{
     
 })
 
-router.get('/add-offers',async(req,res)=>{
+router.get('/add-offers',redirectToLogin,async(req,res)=>{
     let allOffers = await couponHelpers.getAllOffers()
     for(x of allOffers){
         x.exprdate = moment(x.exprdate).format('ll')

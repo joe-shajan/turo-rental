@@ -487,7 +487,7 @@ router.post('/checkout/:id', async (req, res) => {
   }
 })
 
-router.get('/checkout/', (req, res) => {
+router.get('/checkout/',redirectToLogin, (req, res) => {
   req.session.couponApplied = false
   res.render('users/checkout', {
     userData: req.session.checkoutDetails.userData,
@@ -587,7 +587,7 @@ router.get('/find-cars-inWishlist', async (req, res) => {
 
 
 
-router.get('/wishlist', userData, async (req, res) => {
+router.get('/wishlist',redirectToLogin, userData, async (req, res) => {
   let carsData = await userHelpers.getCarDetailsInWishlist(req.session.user._id)
   res.render('users/wishlist', { carsData, userData: res.userData, user: req.session.user })
 })
@@ -619,7 +619,7 @@ router.get('/get-average-review', async (req, res) => {
   res.json(carData)
 })
 
-router.get('/cancelled-bookings', userData, async (req, res) => {
+router.get('/cancelled-bookings',redirectToLogin, userData, async (req, res) => {
   let tripData = await bookingHelpers.getCancelledBookingByUser(req.session.user._id)
   for (x of tripData) {
     x.from = moment(x.from).format('lll')

@@ -22,7 +22,7 @@ function redirectToLogin(req, res, next) {
 }
 
 /* admin dashboard. */
-router.get('/',async function(req, res, next) {
+router.get('/',redirectToLogin,async function(req, res, next) {
   let salesReport = await reportHelpers.getSalesReportByCar();
   let carsCount = await carsHelpers.getCarsCount()
   let usersCount = await userHelpers.getUsersCount()

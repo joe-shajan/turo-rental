@@ -12,6 +12,13 @@ cron.schedule("*/1 * * * *", function () {
     bookingHelpers.autoMoveTocancel()
 });
 
+function redirectToLogin(req, res, next) {
+    if (!req.session.admin) {
+      res.redirect('/admin/login')
+    } else {
+      next()
+    }
+  }
 
 function convertMilliseconds(x) {
     diffInMillis = (x.from - new Date)
@@ -30,7 +37,7 @@ function convertMilliseconds(x) {
     }
 }
 
-router.get('/new-bookings', (req, res) => {
+router.get('/new-bookings',redirectToLogin, (req, res) => {
     bookingHelpers.getNewBookings().then((bookings) => {
         for (x of bookings) {
             convertMilliseconds(x)
@@ -44,7 +51,7 @@ router.get('/new-bookings', (req, res) => {
     })
 })
 
-router.get('/cancelled-bookings', (req, res) => {
+router.get('/cancelled-bookings',redirectToLogin, (req, res) => {
 
     bookingHelpers.cancelledBooking().then((bookings) => {
         for (x of bookings) {
@@ -62,7 +69,7 @@ router.get('/cancelled-bookings', (req, res) => {
     })
 })
 
-router.get('/on-going-trips', (req, res) => {
+router.get('/on-going-trips',redirectToLogin, (req, res) => {
     bookingHelpers.onGoingTrips().then((bookings) => {
         for (x of bookings) {
             diffInMillis = x.to - new Date
@@ -91,7 +98,7 @@ router.get('/on-going-trips', (req, res) => {
     })
 })
 
-router.get('/completed-trips', (req, res) => {
+router.get('/completed-trips',redirectToLogin, (req, res) => {
     bookingHelpers.completedTrips().then((bookings) => {
         for (x of bookings) {
             x.from = moment(x.from).format('lll')

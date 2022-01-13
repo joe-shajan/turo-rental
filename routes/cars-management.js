@@ -1,30 +1,24 @@
 var express = require('express');
 var router = express.Router();
 var carsHelpers = require('../helpers/cars-helpers')
-const multer = require("multer");
 const path = require('path');
 const fs = require('fs');
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "public/images/car-images");
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
+
+function redirectToLogin(req, res, next) {
+    if (!req.session.admin) {
+      res.redirect('/admin/login')
+    } else {
+      next()
     }
-});
-
-var upload = multer({ storage: storage });
-var uploadMultiple = upload.fields([{ name: 'image1', maxCount: 1 }, { name: 'image2', maxCount: 4 }])
-
-
+  }
 /* GET add car page. */
 
-router.get('/add-new-car/', function (req, res, next) {
+router.get('/add-new-car/',redirectToLogin, function (req, res, next) {
     res.render("admin/add-new-car", { admin: true })
 });
 
 // view all cars
-router.get('/view-all-cars/', function (req, res, next) {
+router.get('/view-all-cars/',redirectToLogin, function (req, res, next) {
     carsHelpers.getAllCars().then((cars) => {
         res.render("admin/view-all-cars", { admin: true, cars, carAdded: req.session.carAdded })
         req.session.carAdded = false;
@@ -32,21 +26,21 @@ router.get('/view-all-cars/', function (req, res, next) {
 });
 
 // get add models page to user 
-router.get('/add-models/', function (req, res, next) {
+router.get('/add-models/',redirectToLogin, function (req, res, next) {
     res.render("admin/add-models", { admin: true, invalidInput: req.session.invalidInput })
     req.session.invalidInput = false
 
 });
 
 // view all models
-router.get('/view-brands/', function (req, res, next) {
+router.get('/view-brands/',redirectToLogin, function (req, res, next) {
     carsHelpers.getAllMakes().then((cars) => {
         res.render("admin/view-brands", { admin: true, cars })
     })
 });
 
 // view all brands
-router.get('/view-models/:id', function (req, res, next) {
+router.get('/view-models/:id',redirectToLogin, function (req, res, next) {
 
     carsHelpers.getAllModels(req.params.id).then((models) => {
         res.render("admin/view-models", { admin: true, models })

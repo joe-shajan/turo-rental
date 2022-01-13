@@ -2,20 +2,30 @@ const express = require('express');
 const reportHelpers = require('../helpers/report-helpers');
 const router = express.Router();
 
-router.get('/trip-report', async (req, res, next) => {
+
+function redirectToLogin(req, res, next) {
+    if (!req.session.admin) {
+        res.redirect('/admin/login')
+    } else {
+        next()
+    }
+}
+
+
+router.get('/trip-report',redirectToLogin, async (req, res, next) => {
 
     let completedTrips = await reportHelpers.getTripReports()
     res.render('admin/report/trip-report', { admin: true, completedTrips })
 })
 
-router.get('/trip-report-by-date', async (req, res, next) => {
+router.get('/trip-report-by-date',redirectToLogin, async (req, res, next) => {
     
     let completedTrips = await reportHelpers.getTripReportsByDate(req.query)
     res.render('admin/report/trip-report', { admin: true, completedTrips: completedTrips.bookings, search: completedTrips.search })
 
 })
 
-router.get('/sales-report', async (req, res, next) => {
+router.get('/sales-report',redirectToLogin, async (req, res, next) => {
 
     let salesReport = await reportHelpers.getSalesReportByCar()
     res.render('admin/report/sales-report', { admin: true, salesReport: salesReport.bookings, sales: salesReport.sales })
@@ -27,13 +37,13 @@ router.get('/sales-report-by-city', async (req, res, next) => {
 })
 
 
-router.get('/sales-report-by-date', async (req, res, next) => {
+router.get('/sales-report-by-date',redirectToLogin, async (req, res, next) => {
 
     let salesReport = await reportHelpers.getSalesReportByCarSearch(req.query)
     res.render('admin/report/sales-report', { admin: true, salesReport: salesReport.bookings, sales: salesReport.sales, search: salesReport.search })
 })
 
-router.get('/sales-report-city-by-date', async (req, res, next) => {
+router.get('/sales-report-city-by-date',redirectToLogin, async (req, res, next) => {
 
     let salesReport = await reportHelpers.getSalesReportByCitySearch(req.query)
     res.render('admin/report/sales-report-by-city', { admin: true, salesReport: salesReport.bookings, sales: salesReport.sales, search: salesReport.search })
