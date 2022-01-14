@@ -15,8 +15,6 @@ const userManagementRouter = require('./routes/user-management')
 const couponManagementRouter = require('./routes/coupon-management')
 const reportManagement = require('./routes/report')
 
-
-
 const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.json({

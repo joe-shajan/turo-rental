@@ -32,8 +32,6 @@ router.get('/',redirectToLogin,async function(req, res, next) {
 
 });
 
-
-
 /* admin login. */
 router.get('/login',redirectToDashboard, function(req, res, next) {
   res.render('admin/admin-login',{loginError:req.session.loginError,loginErrornovalue:req.session.loginErrornovalue ,Loginpage:true})
@@ -62,16 +60,10 @@ router.post('/login', function(req, res, next) {
   }
 });
 
-
-
-
 //logout
 router.get('/admin-logout', (req, res) => {
   req.session.admin = null
   res.redirect('/admin/login')
 })
-
-
-
 
 module.exports = router;

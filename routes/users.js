@@ -719,10 +719,6 @@ router.get('/cancel', (req, res) => {
   res.redirect('/checkout/')
 });
 
-
-
-
-
 router.get('/sort/', userData, async (req, res) => {
 
   let carsData = await carsHelpers.sort(req.query)
@@ -743,7 +739,5 @@ router.get('/filter', userData, async (req, res) => {
   let carIds = await carsHelpers.filter(req.query)
   res.json(carIds)
 })
-
-
 
 module.exports = router;

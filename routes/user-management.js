@@ -20,7 +20,6 @@ router.get('/blocked-users',redirectToLogin,(req,res)=>{
     res.render('admin/users/blocked-users',{admin:true})
 })
 
-
 router.get('/view-user-profile/:id',(req,res)=>{
     
     userHelpers.getUser(req.params.id).then((userData)=>{
@@ -45,4 +44,5 @@ router.get('/unblock-user/:id',(req,res)=>{
         res.redirect('/user-management/view-user-profile/'+req.params.id)
     })
 })
+
 module.exports = router

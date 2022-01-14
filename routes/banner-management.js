@@ -5,8 +5,6 @@ const formidable = require('formidable');
 const fs = require('fs')
 const path = require('path');
 
-
-
 router.get('/banner',(req,res)=>{
     bannerHelpers.getBanner().then((filename)=>{
         res.render("admin/banner/banner",{admin:true,filename})
