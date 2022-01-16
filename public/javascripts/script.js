@@ -138,17 +138,23 @@ function timer(remaining) {
 timer(120);
 
 
-document.addEventListener("DOMContentLoaded", function (event) {
 
-    function OTPInput() {
-        const inputs = document.querySelectorAll('#otp > *[id]');
-        for (let i = 0; i < inputs.length; i++) { inputs[i].addEventListener('keydown', function (event) { if (event.key === "Backspace") { inputs[i].value = ''; if (i !== 0) inputs[i - 1].focus(); } else { if (i === inputs.length - 1 && inputs[i].value !== '') { return true; } else if (event.keyCode > 47 && event.keyCode < 58) { inputs[i].value = event.key; if (i !== inputs.length - 1) inputs[i + 1].focus(); event.preventDefault(); } else if (event.keyCode > 64 && event.keyCode < 91) { inputs[i].value = String.fromCharCode(event.keyCode); if (i !== inputs.length - 1) inputs[i + 1].focus(); event.preventDefault(); } } }); }
-    } OTPInput();
+$(".otpinput").keyup(function () {
+    if (this.value.length == this.maxLength) {
+        if(this.value >= 0 || this.value <= 9){
+           
+            $(this).next('.otpinput').focus();
+        }else{
+            this.value = ""
+        }
+    }
 });
+
+
 
 //===========otp form validation ==============
 function validateotp() {
-    
+
     var first = document.getElementById("first").value;
     var second = document.getElementById("second").value;
     var third = document.getElementById("third").value;
@@ -191,7 +197,7 @@ function previewsingle(event) {
 }
 
 function previewMultiple(event) {
-    
+
     let multipleimgformat = document.getElementById("multipleimg").value
     let allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
 
@@ -200,7 +206,7 @@ function previewMultiple(event) {
 
     if (!allowedExtensions.exec(multipleimgformat)) {
         document.getElementById("multiplemsg").innerHTML = "Please upload only images."
-        multipleimg.value = ""  
+        multipleimg.value = ""
         return false;
     } else {
         document.getElementById("multiplemsg").innerHTML = ""
