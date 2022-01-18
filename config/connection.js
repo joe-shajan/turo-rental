@@ -4,7 +4,7 @@ const state = {
 }
 
 module.exports.connect=function(done){
-    const url='mongodb://localhost:27017'
+    const url='mongodb://3.110.41.44:27017'
     const dbname='turo'
 
     MongoClient.connect(url,(err,data)=>{
@@ -13,6 +13,7 @@ module.exports.connect=function(done){
         done()
     })
 }
+
 
 
 module.exports.get = function () {

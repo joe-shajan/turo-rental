@@ -59,7 +59,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: "secret",
   store: MongoStore.create({
-    mongoUrl: 'mongodb://localhost/turo',
+    mongoUrl: 'mongodb://3.110.41.44/turo',
   }),
   resave: true,
   saveUninitialized: true,
