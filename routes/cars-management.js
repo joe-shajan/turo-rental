@@ -3,6 +3,7 @@ var router = express.Router();
 var carsHelpers = require('../helpers/cars-helpers')
 const path = require('path');
 const fs = require('fs');
+const uploadToS3 = require('../helpers/upload-to-s3');
 
 function redirectToLogin(req, res, next) {
     if (!req.session.admin) {
@@ -76,17 +77,17 @@ router.post('/add-models/', function (req, res, next) {
 
 
 //add new car
-router.post('/add-new-car', function (req, res, next) {
+router.post('/add-new-car',async function (req, res, next) {
     let len = req.body.image.length
     let imageNames = []
     for (i = 0; i < len; i++) {
         let base64String = req.body.image[i]
-        let base64Image = base64String.split(';base64,').pop();
         let filename = Date.now() + '-' + Math.round(Math.random() * 1E9) + '.png'
-
-        imageNames.push(filename)
-        fs.writeFile(path.join(__dirname, '../public/images/car-images/' + filename), base64Image, { encoding: 'base64' }, function (err) {
-        });
+        let location = await uploadToS3.uploadFileToS3(filename, base64String)
+        if(location){
+            imageNames.push(location)
+        }
+       
     }
 
     carsHelpers.addNewCar(req.body, imageNames).then((response) => {

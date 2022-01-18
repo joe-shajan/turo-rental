@@ -27,7 +27,8 @@ app.use(bodyParser.urlencoded({
 }))
 //database connection
 var db = require('./config/connection')
-var session = require("express-session")
+const session = require("express-session")
+const MongoStore = require('connect-mongo');
 require('dotenv')
 
 // view engine setup
@@ -57,6 +58,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 //session
 app.use(session({
   secret: "secret",
+  store: MongoStore.create({
+    mongoUrl: 'mongodb://localhost/turo',
+  }),
   resave: true,
   saveUninitialized: true,
   cookie: {

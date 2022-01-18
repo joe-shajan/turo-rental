@@ -3,7 +3,7 @@ var router = express.Router();
 const locationHelpers = require('../helpers/location-helpers')
 const path = require('path');
 const fs = require('fs')
-
+const uploadToS3 = require('../helpers/upload-to-s3');
 
 function redirectToLogin(req, res, next) {
     if (!req.session.admin) {
@@ -33,17 +33,17 @@ router.get('/get-city/:state', (req, res) => {
 
 
 
-router.post('/add-city', (req, res) => {
+router.post('/add-city',async (req, res) => {
 
     let base64String = req.body.image
-    let base64Image = base64String.split(';base64,').pop();
     let filename = Date.now() + '-' + Math.round(Math.random() * 1E9) + '.png'
-
-    fs.writeFile(path.join(__dirname, '../public/images/location-images/' + filename), base64Image, { encoding: 'base64' }, function (err) {
-    });
-    locationHelpers.addCity(req.body, filename).then(() => {
-        res.redirect('/location-management/add-location')
-    })
+    let location = await uploadToS3.uploadFileToS3(filename, base64String)
+    if(location){
+        locationHelpers.addCity(req.body, location).then(() => {
+            res.redirect('/location-management/add-location')
+        })
+    }
+    
 })
 
 router.get('/view-states',redirectToLogin, async (req, res) => {

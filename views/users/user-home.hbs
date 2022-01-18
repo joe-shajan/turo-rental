@@ -1,7 +1,7 @@
 {{!-- header with search --}}
 
 <section class="section-1"
-    style="background: url(/images/banner-images/{{filename}}); background-position: center; background-repeat: no-repeat; background-size: cover;   ">
+    style="background: url({{filename}}); background-position: center; background-repeat: no-repeat; background-size: cover;   ">
     <div class="container">
         <form action="/search-location-date-time" method="get" onsubmit="return validateSearchForm()">
             <div class=" d-flex justify-content-center">
@@ -154,7 +154,7 @@
                                 <div class="card shadow rounded-2 mb-5">
                                     <div class="bg-image hover-zoom">
 
-                                        <img src="/images/location-images/{{this.image}}" class="card-img-top"
+                                        <img src="{{this.image}}" class="card-img-top"
                                             alt="..." />
                                     </div>
                                     <div class="text-center">
@@ -194,7 +194,7 @@
                                 <div class="bg-image hover-zoom">
                                     <a class="text-decoration-none text-dark"
                                         href="/view-car-details/{{this.cars._id}}">
-                                        <img src="/images/car-images/{{this.cars.images.[0]}}" class="card-img-top"
+                                        <img src="{{this.cars.images.[0]}}" class="card-img-top"
                                             alt="..." style="height: 190px; object-fit: cover;" />
                                     </a>
                                 </div>
@@ -295,7 +295,7 @@
                     + ' <div class=" rounded shadow bg-white  mb-4" style="height:270px">'
                     + '<div class="bg-image hover-zoom">'
                     + '<a class="text-decoration-none text-dark" href="/view-car-details/' + x._id + '">'
-                    + '<img src="/images/car-images/' + x.images[0] + '" class="card-img-top" alt="..." style="height: 190px; object-fit: cover;" />'
+                    + '<img src="' + x.images[0] + '" class="card-img-top" alt="..." style="height: 190px; object-fit: cover;" />'
                     + '</a>'
                     + '</div>'
                     + ' <div class="row ps-2 pe-2 ">'

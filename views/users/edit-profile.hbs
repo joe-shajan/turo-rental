@@ -10,7 +10,7 @@
             <div class="card-body text-center">
               <div id="profile">
                 {{#if userData.profileImage}}
-                <img src="/images/user-images/{{userData.profileImage}}" alt="">
+                <img src="{{userData.profileImage}}" alt="">
                 {{else}}
                 <img src="https://icon-library.com/images/profile-image-icon/profile-image-icon-24.jpg" alt="avatar"
                   class="rounded-circle img-fluid" style="width: 150px;">
@@ -86,7 +86,7 @@
                 <div class="col-sm-6">
                   <div id="licence" class="mb-2">
                     {{#if userData.licenceImage}}
-                    <img src="/images/user-images/{{userData.licenceImage}}" alt="">
+                    <img src="{{userData.licenceImage}}" alt="">
                     {{/if}}
                   </div>
 

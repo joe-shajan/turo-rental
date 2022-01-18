@@ -1,44 +1,61 @@
-var express = require('express');
-var router = express.Router();
-var bannerHelpers = require('../helpers/banner-helpers')
+const express = require('express');
+const router = express.Router();
+const bannerHelpers = require('../helpers/banner-helpers')
 const formidable = require('formidable');
-const fs = require('fs')
-const path = require('path');
+const uploadToS3 = require('../helpers/upload-to-s3');
 
-router.get('/banner',(req,res)=>{
-    bannerHelpers.getBanner().then((filename)=>{
-        res.render("admin/banner/banner",{admin:true,filename})
+router.get('/banner', (req, res) => {
+    bannerHelpers.getBanner().then((filename) => {
+        res.render("admin/banner/banner", { admin: true, filename })
     })
 })
-
-router.post('/add-banner',(req,res)=>{
+router.post('/add-banner', (req, res) => {
     const form = formidable({ multiples: true });
-    
-    form.parse(req, (err, fields, files) => {
+
+    form.parse(req,async (err, fields, files) => {
         if (err) {
-          res.writeHead(err.httpCode || 400, { 'Content-Type': 'text/plain' });
-          res.end(String(err));
-          return;
+            res.writeHead(err.httpCode || 400, { 'Content-Type': 'text/plain' });
+            res.end(String(err));
+            return;
         }
         let base64String = fields.image
-        let base64Image = base64String.split(';base64,').pop();
-        let filename = Date.now()+'-'+ Math.round(Math.random()*1E9)+'.png'
-        
-        fs.writeFile(path.join(__dirname, '../public/images/banner-images/'+filename), base64Image, {encoding: 'base64'}, function(err) {
-            bannerHelpers.addBanner(filename)
-        }); 
+        let filename = Date.now() + '-' + Math.round(Math.random() * 1E9) + '.png'
+
+      let location = await uploadToS3.uploadFileToS3(filename, base64String)
+      if(location){
+          bannerHelpers.addBanner(location)
+      }
     });
     res.json(true);
 });
-router.get('/delete-banner',(req,res)=>{
-bannerHelpers.deleteBanner().then(()=>{
 
-    res.redirect('/banner-management/banner')
-})
+// router.post('/add-banner',(req,res)=>{
+//     const form = formidable({ multiples: true });
+
+//     form.parse(req, (err, fields, files) => {
+//         if (err) {
+//           res.writeHead(err.httpCode || 400, { 'Content-Type': 'text/plain' });
+//           res.end(String(err));
+//           return;
+//         }
+//         let base64String = fields.image
+//         let base64Image = base64String.split(';base64,').pop();
+//         let filename = Date.now()+'-'+ Math.round(Math.random()*1E9)+'.png'
+
+//         fs.writeFile(path.join(__dirname, '../public/images/banner-images/'+filename), base64Image, {encoding: 'base64'}, function(err) {
+//             bannerHelpers.addBanner(filename)
+//         }); 
+//     });
+//     res.json(true);
+// });
+
+
+router.get('/delete-banner', (req, res) => {
+    bannerHelpers.deleteBanner().then(() => {
+
+        res.redirect('/banner-management/banner')
+    })
 })
 
-router.get('/cropsample',(req,res)=>{
-    res.render('admin/banner/cropsample')
-})
 
 module.exports = router

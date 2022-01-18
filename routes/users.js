@@ -1,10 +1,11 @@
-var express = require('express');
-var router = express.Router();
-var carsHelpers = require('../helpers/cars-helpers')
-var userHelpers = require('../helpers/user-helpers')
-var bannerHelpers = require('../helpers/banner-helpers')
-var bookingHelpers = require('../helpers/booking-helpers')
-var locationHelpers = require('../helpers/location-helpers')
+const express = require('express');
+const router = express.Router();
+const carsHelpers = require('../helpers/cars-helpers')
+const userHelpers = require('../helpers/user-helpers')
+const bannerHelpers = require('../helpers/banner-helpers')
+const bookingHelpers = require('../helpers/booking-helpers')
+const locationHelpers = require('../helpers/location-helpers')
+const uploadToS3 = require('../helpers/upload-to-s3');
 var moment = require('moment');
 var { ObjectId } = require('mongodb')
 const prettyMilliseconds = require('pretty-ms');
@@ -38,7 +39,7 @@ paypal.configure({
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/images/user-images");
+    cb(null, "");
   },
   filename: function (req, file, cb) {
     cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
@@ -344,17 +345,20 @@ router.get('/edit-profile', (req, res) => {
 })
 
 router.post('/update-profile', (req, res) => {
-  uploadMultiple(req, res, (err) => {
+  uploadMultiple(req, res, async(err) => {
     if (err) {
       console.log(err);
       return
     }
 
     if (req.files.profilepic) {
-      req.body.profileImage = req.files.profilepic[0].filename
+    let profileLocation = await uploadToS3.uploadLicenceProfile(req.files.profilepic[0].filename)
+      req.body.profileImage = profileLocation
     }
     if (req.files.licenceimg) {
-      req.body.licenceImage = req.files.licenceimg[0].filename
+      let LicenceLocation = await uploadToS3.uploadLicenceProfile(req.files.licenceimg[0].filename)
+
+      req.body.licenceImage = LicenceLocation
     }
     userHelpers.updateUser(req.body, req.session.user._id).then(() => {
       res.redirect('/profile')

@@ -7,8 +7,7 @@ const bookingHelpers = require('../helpers/booking-helpers')
 
 const cron = require("node-cron");
 
-cron.schedule("*/1 * * * *", function () {
-    console.log("job running");
+cron.schedule("*/5 * * * *", function () {
     bookingHelpers.autoMoveTocancel()
 });
 
