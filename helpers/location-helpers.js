@@ -98,7 +98,7 @@ module.exports = {
     },
     deleteState:(stateId)=>{
         return new Promise((resolve,reject)=>{
-            db.get().collection(collections.CITIES).removeOne({_id:ObjectId(stateId)}).then(()=>{
+            db.get().collection(collections.CITIES).deleteOne({_id:ObjectId(stateId)}).then(()=>{
                 resolve()
             })
         })

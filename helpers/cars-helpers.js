@@ -23,8 +23,8 @@ module.exports = {
         delete carData.longitude
 
         return new Promise((resolve, reject) => {
-            db.get().collection(collections.CARS_COLLECTION).insertOne(carData).then((data) => {
-                resolve(data.ops[0]._id)
+            db.get().collection(collections.CARS_COLLECTION).insertOne(carData).then(() => {
+                resolve()
             })
         })
     },
@@ -66,14 +66,14 @@ module.exports = {
     },
     deleteCar: (carId) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collections.CARS_COLLECTION).removeOne({ _id: ObjectId(carId) }).then(() => {
+            db.get().collection(collections.CARS_COLLECTION).deleteOne({ _id: ObjectId(carId) }).then(() => {
                 resolve()
             })
         })
     },
     deleteBrand: (brandId) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collections.MODELS).removeOne({ _id: ObjectId(brandId) }).then(() => {
+            db.get().collection(collections.MODELS).deleteOne({ _id: ObjectId(brandId) }).then(() => {
                 resolve()
             })
         })

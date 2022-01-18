@@ -515,9 +515,14 @@ module.exports = {
                     }
                 },
             ]).toArray()
-            bookings[0].revenue = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(bookings[0].revenue)
+            if(bookings[0]){
 
-            resolve(bookings[0].revenue)
+                bookings[0].revenue = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(bookings[0].revenue)
+                
+                resolve(bookings[0].revenue)
+            }else{
+                resolve()
+            }
         })
     },
     getDayWiseBookingForOneWeek: () => {

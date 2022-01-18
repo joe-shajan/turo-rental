@@ -90,7 +90,7 @@ router.post('/add-new-car',async function (req, res, next) {
        
     }
 
-    carsHelpers.addNewCar(req.body, imageNames).then((response) => {
+    carsHelpers.addNewCar(req.body, imageNames).then(() => {
         req.session.carAdded = true
         res.redirect('/cars-management/view-all-cars')
     })

@@ -29,25 +29,6 @@ router.post('/add-banner', (req, res) => {
     res.json(true);
 });
 
-// router.post('/add-banner',(req,res)=>{
-//     const form = formidable({ multiples: true });
-
-//     form.parse(req, (err, fields, files) => {
-//         if (err) {
-//           res.writeHead(err.httpCode || 400, { 'Content-Type': 'text/plain' });
-//           res.end(String(err));
-//           return;
-//         }
-//         let base64String = fields.image
-//         let base64Image = base64String.split(';base64,').pop();
-//         let filename = Date.now()+'-'+ Math.round(Math.random()*1E9)+'.png'
-
-//         fs.writeFile(path.join(__dirname, '../public/images/banner-images/'+filename), base64Image, {encoding: 'base64'}, function(err) {
-//             bannerHelpers.addBanner(filename)
-//         }); 
-//     });
-//     res.json(true);
-// });
 
 
 router.get('/delete-banner', (req, res) => {

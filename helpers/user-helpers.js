@@ -22,7 +22,8 @@ module.exports = {
             let response = {}
             userData.password = await bcrypt.hash(userData.password, 10)
             db.get().collection(collections.USER_COLLECTION).insertOne(userData).then((userData) => {
-                response.user = userData.ops[0]
+                
+                response.user = userData
                 response.status = true
                 resolve(response)
             })

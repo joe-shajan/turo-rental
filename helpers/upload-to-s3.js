@@ -15,7 +15,7 @@ const s3 = new AWS.S3({
 module.exports ={
     
     uploadFileToS3: async(filePath, file)=> {
-        // const buf = fs.readFileSync("hero-bg.png")
+        
         const buf = new Buffer.from(file.replace(/^data:image\/\w+;base64,/, ""),  'base64')
         // Setting up S3 upload parameters
         const params = {

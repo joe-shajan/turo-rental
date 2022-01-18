@@ -127,8 +127,8 @@ module.exports = {
                 }
 
                 db.get().collection(collections.CANCELLED_BOOKINGS).insertOne(data).then((datas) => {
-                    datas = datas.ops[0]
-                    db.get().collection(collections.NEW_BOOKINGS).removeOne({ _id: datas._id }).then(() => {
+                   
+                    db.get().collection(collections.NEW_BOOKINGS).deleteOne({ _id: ObjectId(id) }).then(() => {
                         resolve(true)
                     })
                 })
@@ -138,9 +138,9 @@ module.exports = {
     startTrip: (id) => {
         return new Promise(async (resolve, reject) => {
             let data = await db.get().collection(collections.NEW_BOOKINGS).findOne({ _id: ObjectId(id) })
-            db.get().collection(collections.ON_GOING_TRIPS).insertOne(data).then((datas) => {
-                datas = datas.ops[0]
-                db.get().collection(collections.NEW_BOOKINGS).removeOne({ _id: datas._id }).then(() => {
+            db.get().collection(collections.ON_GOING_TRIPS).insertOne(data).then(() => {
+                
+                db.get().collection(collections.NEW_BOOKINGS).deleteOne({ _id:ObjectId(id) }).then(() => {
                     resolve()
                 })
             })
@@ -152,8 +152,8 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             let data = await db.get().collection(collections.ON_GOING_TRIPS).findOne({ _id: ObjectId(id) })
             db.get().collection(collections.COMPLETED_TRIPS).insertOne(data).then((datas) => {
-                datas = datas.ops[0]
-                db.get().collection(collections.ON_GOING_TRIPS).removeOne({ _id: datas._id }).then(() => {
+                
+                db.get().collection(collections.ON_GOING_TRIPS).deleteOne({ _id: ObjectId(id) }).then(() => {
                     resolve()
                 })
             })
@@ -389,7 +389,7 @@ module.exports = {
                         x.refundAmount = x.totalAmount - x.cancellationFee
 
                         await db.get().collection(collections.CANCELLED_BOOKINGS).insertOne(x)
-                        await db.get().collection(collections.NEW_BOOKINGS).removeOne({ _id: ObjectId(x._id) })
+                        await db.get().collection(collections.NEW_BOOKINGS).deleteOne({ _id: ObjectId(x._id) })
                     }
                 }
                 

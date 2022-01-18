@@ -29,7 +29,7 @@ module.exports = {
     },
     deleteCoupon: (id) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collections.COUPON).removeOne({ _id: ObjectId(id) }).then(() => {
+            db.get().collection(collections.COUPON).deleteOne({ _id: ObjectId(id) }).then(() => {
                 resolve()
             })
         })
@@ -76,7 +76,7 @@ module.exports = {
     },
     deleteOffer: (id) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collections.OFFERS).removeOne({ _id: ObjectId(id) }).then(() => {
+            db.get().collection(collections.OFFERS).deleteOne({ _id: ObjectId(id) }).then(() => {
                 resolve()
             })
         })
