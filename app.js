@@ -43,8 +43,8 @@ const hbs = create({
 });
 app.engine('hbs', hbs.engine);
 
-hbs.handlebars.registerHelper("inc",(value,options)=>{
-  return parseInt(value) +1;
+hbs.handlebars.registerHelper("inc", (value, options) => {
+  return parseInt(value) + 1;
 });
 
 app.use(logger('dev'));
@@ -58,48 +58,48 @@ app.use(express.static(path.join(__dirname, 'public')));
 //session
 app.use(session({
   secret: "secret",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 30 * 24 * 60 * 60 * 1000
+  },
   store: MongoStore.create({
     mongoUrl: 'mongodb://13.232.32.220/turo',
-  }),
-  resave: true,
-  saveUninitialized: true,
-  cookie: {
-    maxAge: 7200000,
-  }
+  })
 }))
 
 //connect to database
 db.connect((err) => {
-  
+
   if (err) console.log("connection error" + err);
   else console.log("database connected succesfully");
 })
 
 //cache control bowser
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   next();
 });
 
 app.use('/', usersRouter);
 app.use('/admin', adminRouter);
-app.use('/cars-management',carsManagementRouter)
-app.use('/banner-management',bannerManagementRouter)
-app.use('/bookings',bookingsRouter)
-app.use('/location-management',locationManagementRouter)
-app.use('/user-management',userManagementRouter)
-app.use('/coupon-management',couponManagementRouter)
-app.use('/report',reportManagement)
+app.use('/cars-management', carsManagementRouter)
+app.use('/banner-management', bannerManagementRouter)
+app.use('/bookings', bookingsRouter)
+app.use('/location-management', locationManagementRouter)
+app.use('/user-management', userManagementRouter)
+app.use('/coupon-management', couponManagementRouter)
+app.use('/report', reportManagement)
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  
+app.use(function (req, res, next) {
+
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

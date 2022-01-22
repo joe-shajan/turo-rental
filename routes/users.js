@@ -160,7 +160,7 @@ router.get('/view-car-details/:id', userData, async (req, res, next) => {
   req.session.totalAmt = null
   let carsData = await carsHelpers.getCarsDetails(req.params.id)
   let reviews = await carsHelpers.getAllReviews(req.params.id)
-
+  req.session.checkoutDetails = null
   res.render('users/view-car-details', { reviews, userData: res.userData, carsData, user: req.session.user, userNotVerified: req.session.userNotVerified });
 
   req.session.userNotVerified = false
@@ -493,6 +493,7 @@ router.post('/checkout/:id', async (req, res) => {
 
 router.get('/checkout/',redirectToLogin, (req, res) => {
   req.session.couponApplied = false
+  console.log(req.session.checkoutDetails);
   res.render('users/checkout', {
     userData: req.session.checkoutDetails.userData,
     carData: req.session.checkoutDetails.carData,
