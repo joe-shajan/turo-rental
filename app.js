@@ -64,7 +64,7 @@ app.use(session({
     maxAge: 30 * 24 * 60 * 60 * 1000
   },
   store: MongoStore.create({
-    mongoUrl: 'mongodb://13.232.32.220/turo',
+    mongoUrl: 'mongodb://localhost/turo',
   })
 }))
 
