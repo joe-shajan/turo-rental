@@ -20,10 +20,7 @@ function redirectToLogin(req, res, next) {
   }
 
 function convertMilliseconds(x) {
-    console.log('new date with out bracket',new Date)
-    console.log('new date with  bracket',new Date().getHours() + 5);
-    console.log('from date',x.from);
-    diffInMillis = (x.from - new Date().getHours() + 5) //five hours added
+    diffInMillis = (x.from - new Date())
     if (diffInMillis < 0) {
         x.lessThanTwoHour = true
         diffInMillis = diffInMillis * -1
