@@ -33,6 +33,7 @@ function convertMilliseconds(x) {
             x.lessThanTwoHour = true
         }
         x.timeToStart = prettyMilliseconds(diffInMillis, { verbose: true, compact: true })
+        x.lessThanTwoHour = true
     }
 }
 
