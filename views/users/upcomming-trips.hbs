@@ -41,17 +41,17 @@
                 <p class="mb-0">Pick up and drop address : <a
                         href="http://maps.google.com/?q={{this.cars.pick_up_address.latitude}},{{this.cars.pick_up_address.longitude}}"
                         target="_blank" class="text-decoration-none">{{this.cars.pick_up_address.address}}</a>
-                
+
                 </p>
                 {{#if timeToCancel}}
                 <p class="text-danger">
-                    Booking will be Cancelled in 
+                    Booking will be Cancelled in
                     {{this.timeToCancel}}</p>
 
                 {{/if}}
                 {{#if timeToStart}}
                 <p class="fw-bold text-success">Trip Starts in {{this.timeToStart}}</p>
-                
+
 
                 {{/if}}
             </div>
