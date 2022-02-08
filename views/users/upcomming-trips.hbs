@@ -41,6 +41,9 @@
                 <p class="mb-0">Pick up and drop address : <a
                         href="http://maps.google.com/?q={{this.cars.pick_up_address.latitude}},{{this.cars.pick_up_address.longitude}}"
                         target="_blank" class="text-decoration-none">{{this.cars.pick_up_address.address}}</a>
+                <span><a
+                        href="http://maps.google.com/?q={{this.cars.pick_up_address.longitude}},{{this.cars.pick_up_address.latitude}}"
+                        target="_blank" class="text-decoration-none">view location</a></span>
                 </p>
                 {{#if timeToCancel}}
                 <p class="text-danger">
