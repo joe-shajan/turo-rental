@@ -269,19 +269,20 @@
     async function showPosition(position) {
         latitude = position.coords.latitude
         longitude = position.coords.longitude
+        if (latitude) {
+            fetch("https://api.mapbox.com/geocoding/v5/mapbox.places/" + longitude + "," + latitude + ".json?types=locality&access_token=" + mapboxgl.accessToken)
 
-        fetch("https://api.mapbox.com/geocoding/v5/mapbox.places/" + longitude + "," + latitude + ".json?types=locality&access_token=" + mapboxgl.accessToken)
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.features[0].place_name) {
+                        place_name = data.features[0].place_name
+                        document.getElementById('your-address').innerHTML = place_name
+                    }
+                })
+        } else {
+            document.getElementById('no-cars-msg').innerHTML = "Please turn on your location."
 
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.features[0].place_name) {
-                    place_name = data.features[0].place_name
-                    document.getElementById('your-address').innerHTML = place_name
-                } else {
-                    document.getElementById('no-cars-msg').innerHTML = "Please turn on your location."
-
-                }
-            })
+        }
 
         let response = await fetch('/cars-management/get-nearest-cars/' + latitude + '/' + longitude)
         let data = await response.json()
