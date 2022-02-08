@@ -154,8 +154,7 @@
                                 <div class="card shadow rounded-2 mb-5">
                                     <div class="bg-image hover-zoom">
 
-                                        <img src="{{this.image}}" class="card-img-top"
-                                            alt="..." />
+                                        <img src="{{this.image}}" class="card-img-top" alt="..." />
                                     </div>
                                     <div class="text-center">
                                         <h5 class="card-title mt-3">{{this.city}}</h5>
@@ -194,8 +193,8 @@
                                 <div class="bg-image hover-zoom">
                                     <a class="text-decoration-none text-dark"
                                         href="/view-car-details/{{this.cars._id}}">
-                                        <img src="{{this.cars.images.[0]}}" class="card-img-top"
-                                            alt="..." style="height: 190px; object-fit: cover;" />
+                                        <img src="{{this.cars.images.[0]}}" class="card-img-top" alt="..."
+                                            style="height: 190px; object-fit: cover;" />
                                     </a>
                                 </div>
                                 <div class="row ps-2 pe-2">
@@ -277,9 +276,9 @@
             .then((data) => {
                 if (data.features[0].place_name) {
                     place_name = data.features[0].place_name
-
-
                     document.getElementById('your-address').innerHTML = place_name
+                } else {
+                    document.getElementById('no-cars-msg').innerHTML = "Please turn on your location."
 
                 }
             })
