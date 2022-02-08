@@ -327,6 +327,14 @@ router.get("/upcomming-trips/:id", userData, (req, res) => {
       convertMilliseconds(x);
       x.from = moment(x.from).format("lll");
       x.to = moment(x.to).format("lll");
+      console.log(x.cars.pick_up_address);
+      if(x.cars.pick_up_address.latitude > x.cars.pick_up_address.longitude){
+        let temp = x.cars.pick_up_address.latitude
+        x.cars.pick_up_address.latitude = x.cars.pick_up_address.longitude
+        x.cars.pick_up_address.longitude = temp
+      }
+      console.log(x.cars.pick_up_address);
+
     }
     res.render("users/upcomming-trips", {
       userData: res.userData,
